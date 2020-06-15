@@ -24,11 +24,15 @@ def login():
         password = details['pass']
         try:
             cur = mysql.connection.cursor()
-            sql = "SELECT PASSWORD from userstore where Username='"+uname+"';"
-            cur.execute(sql)
+            sql = "SELECT PASSWORD,Type from userstore where Username=%s"
+            cur.execute(sql,(uname,))
             record = cur.fetchone()
+            print(record)
             if(record[0]==password):
-                return 'Success'
+                if(record[1]=='Exec'):
+                    return render_template('executive.html')
+                elif(record[1]=='Cashier'):
+                    return render_template('cashier.html')
             else:
                 return 'Incorrect Username/Password'
 
