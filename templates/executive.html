@@ -6,6 +6,16 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 <link rel="stylesheet" href="css/exec.css">
 
 <style>
@@ -41,7 +51,7 @@
 <body>
 
   <!-- Navbar (sit on top) -->
-  <div class="w3-top">
+  <div class="w3-top" style="z-index:100">
     <div class="w3-bar w3-white w3-card" id="myNavbar">
       <a href="#home" class="w3-bar-item w3-button w3-wide">LOGO</a>
       <!-- Right-sided navbar links -->
@@ -75,47 +85,55 @@
         <a href="#team" onclick="w3_close()" class="w3-bar-item w3-button">TEAM</a>
   </nav>
 
-
-  <div class="left-menu">
-    <div class="logo">
-      <div>Executive Functions</div>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="left-menu">
+        <div class="logo">
+          <div>Executive Functions</div>
+        </div>
+        <div class="accordion">
+          <div class="section">
+            <input type="radio" name="accordion-1" id="section-1" checked="checked"/>
+            <label for="section-1"><span>Manage Customer Information</span></label>
+            <div class="content">
+              <ul>
+                <li id="load_home"><i class="fa fa-plus"></i><span class="fn">Create New Customer</span></li>
+                <li><i class="fa fa-pencil-square-o"></i><span class="fn">Update Customer</span></li>
+                <li><i class="fa fa-trash"></i><span class="fn">Delete Customer</span></li>
+                <li><i class="fa fa-list"></i><span class="fn">View Customers</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="section">
+            <input type="radio" name="accordion-1" id="section-2" value="toggle"/>
+            <label for="section-2"> <span>Manage Account Details</span></label>
+            <div class="content">
+              <ul>
+                <li><i class="fa fa-plus"></i><span class="fn">Create New Account</span></li>
+                <li><i class="fa fa-trash"></i><span class="fn">Delete Account</span></li>
+                <li><i class="fa fa-list"></i><span class="fn">View Accounts</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="section">
+            <input type="radio" name="accordion-1" id="section-3" value="toggle"/>
+            <label for="section-3"> <span>Search Customer</span></label>
+            <div class="content">
+              <ul>
+                <li><i class="fa fa-search"></i><span class="fn">Search and View</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="accordion">
-      <div class="section">
-        <input type="radio" name="accordion-1" id="section-1" checked="checked"/>
-        <label for="section-1"><span>Manage Customer Information</span></label>
-        <div class="content">
-          <ul>
-            <li><i class="fa fa-plus"></i><span class="fn">Create New Customer</span></li>
-            <li><i class="fa fa-pencil-square-o"></i><span class="fn">Update Customer</span></li>
-            <li><i class="fa fa-trash"></i><span class="fn">Delete Customer</span></li>
-            <li><i class="fa fa-list"></i><span class="fn">View Customers</span></li>
-          </ul>
-        </div>
-      </div>
-      <div class="section">
-        <input type="radio" name="accordion-1" id="section-2" value="toggle"/>
-        <label for="section-2"> <span>Manage Account Details</span></label>
-        <div class="content">
-          <ul>
-            <li><i class="fa fa-plus"></i><span class="fn">Create New Account</span></li>
-            <li><i class="fa fa-trash"></i><span class="fn">Delete Account</span></li>
-            <li><i class="fa fa-list"></i><span class="fn">View Accounts</span></li>
-          </ul>
-        </div>
-      </div>
-      <div class="section">
-        <input type="radio" name="accordion-1" id="section-3" value="toggle"/>
-        <label for="section-3"> <span>Search Customer</span></label>
-        <div class="content">
-          <ul>
-            <li><i class="fa fa-search"></i><span class="fn">Search and View</span></li>
-          </ul>
-        </div>
+    <div class="col-sm-9" style="left:-50%;">
+      <div id="content" style="margin-bottom:50px">
       </div>
     </div>
   </div>
-
+</div>
   <script>
     $('.message a').click(function() {
       $('form').animate({
@@ -123,6 +141,11 @@
         opacity: "toggle"
       }, "slow");
     });
+    $(document).ready( function() {
+    $("#load_home").on("click", function() {
+        $("#content").load("/create");
+    });
+});
   </script>
 
   <script>

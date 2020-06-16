@@ -87,9 +87,10 @@ body {
 .left-menu {
   background: #222;
   width: 200px;
-  position: absolute;
-  top: 60px;
+  position: fixed;
+  top: 57px;
   bottom: 0;
+  left:0;
 }
 
 .accordion {

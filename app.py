@@ -27,7 +27,6 @@ def login():
             sql = "SELECT PASSWORD,Type from userstore where Username=%s"
             cur.execute(sql,(uname,))
             record = cur.fetchone()
-            print(record)
             if(record[0]==password):
                 if(record[1]=='Exec'):
                     return render_template('executive.html')
@@ -39,5 +38,25 @@ def login():
         finally:
             cur.close()
 
+@app.route('/create', methods=['GET', 'POST'])
+def Create():
+    if request.method == "POST":
+        id = request.form['id']
+        Name = request.form['Name']
+        Age = request.form['Age']
+        Address = request.form['Address']
+        State = request.form['State']
+        City = request.form['City']
+        try:
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO retail_bank.customer(id,Name,Age,Address,State,City) VALUES (%s,%s,%s,%s,%s,%s)",(id,Name,Age,Address,State,City))
+            mysql.connection.commit()
+            return("done")
+        except Exception as e:
+            return(str(e))
+        finally:
+            cur.close()
+    return render_template('create_customer.html')
+
 if __name__ == '__main__':
-        app.run(debug=True)
+        app.run()
