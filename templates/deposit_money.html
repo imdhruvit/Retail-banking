@@ -17,6 +17,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <link rel="stylesheet" href="css/exec.css">
+<link rel="stylesheet" href="css/create_customer.css">
 
 <style>
   body,
@@ -90,38 +91,27 @@
     <div class="col-sm-3">
       <div class="left-menu">
         <div class="logo">
-          <div>Executive Functions</div>
+          <div>Cashier Functions</div>
         </div>
         <div class="accordion">
           <div class="section">
             <input type="radio" name="accordion-1" id="section-1" checked="checked"/>
-            <label for="section-1"><span>Manage Customer Information</span></label>
+            <label for="section-1"><span>Operate Banking Transactions</span></label>
             <div class="content">
               <ul>
-                <li onclick="window.location.href='{{ url_for('create_customer') }}'"><i class="fa fa-plus"></i><span class="fn">Create New Customer</span></li>
-                <li onclick="window.location.href='{{ url_for('update_customer') }}'"><i class="fa fa-pencil-square-o"></i><span class="fn">Update Customer</span></li>
-                <li onclick="window.location.href='{{ url_for('delete_customer') }}'"><i class="fa fa-trash"></i><span class="fn">Delete Customer</span></li>
-                <li onclick="window.location.href='{{ url_for('view_cust') }}'"><i class="fa fa-list"></i><span class="fn">View Customers</span></li>
+                <li><i class="fa fa-plus"></i><span class="fn">Deposit Money</span></li>
+                <li onclick="window.location.href='{{ url_for('withdraw_money') }}'"><i class="fa fa-minus"></i><span class="fn">Withdraw Money</span></li>
+                <li><i class="fa fa-exchange"></i><span class="fn">Transfer Money</span></li>
+                <li onclick="window.location.href='{{ url_for('statement') }}'"><i class="fa fa-print"></i><span class="fn">Print Statement</span></li>
               </ul>
             </div>
           </div>
           <div class="section">
             <input type="radio" name="accordion-1" id="section-2" value="toggle"/>
-            <label for="section-2"> <span>Manage Account Details</span></label>
+            <label for="section-2"> <span>Search Customer</span></label>
             <div class="content">
               <ul>
-                <li onclick="window.location.href='{{ url_for('create_account') }}'"><i class="fa fa-plus"></i><span class="fn">Create New Account</span></li>
-                <li onclick="window.location.href='{{ url_for('delete_account') }}'"><i class="fa fa-trash"></i><span class="fn">Delete Account</span></li>
-                <li onclick="window.location.href='{{ url_for('view_acc') }}'"><i class="fa fa-list"></i><span class="fn">View Accounts</span></li>
-              </ul>
-            </div>
-          </div>
-          <div class="section">
-            <input type="radio" name="accordion-1" id="section-3" value="toggle"/>
-            <label for="section-3"> <span>Search Customer</span></label>
-            <div class="content">
-              <ul>
-                <li onclick="window.location.href='{{ url_for('search_customer') }}'"><i class="fa fa-search"></i><span class="fn">Search and View</span></li>
+                <li><i class="fa fa-search"></i><span class="fn">Search and View</span></li>
               </ul>
             </div>
           </div>
@@ -130,10 +120,31 @@
     </div>
     <div class="col-sm-9" style="left:-50%;">
       <div id="content" style="margin-bottom:80px">
+        <div class="login-page" id=myModal>
+          <div class="form">
+
+            <form class="login-form" id="deposit_money" method="post" action="http://localhost:5000/deposit_money">
+              <h2 align="center" style="color:#000000 ;font-family: 'Roboto, sans-serif, bold'">Deposit Money</h2>
+              <p>Customer ID: <input type="text" placeholder="42069" name="cid" id="cid" required pattern="[0-9]{10}" /></p>
+              <p>Account ID: <input type="text" placeholder="42069" name="Account_id" id="Account_id" required pattern="[0-9]{10}" /></p>
+              <p>Account Type: </p>
+                <select required id="Type" name="Type">
+                    <option></option>
+                    <option>Savings</option>
+                    <option>Current</option>
+                </select>
+              <p>Balance: <input type="number" placeholder="98000" name="bal" id="bal" required /></p>
+              <p>Deposit Amount: <input type="number" placeholder="30000" name="DAmount" id="DAmount" max="200000" /></p>
+              <button onclick="document.getElementById('deposit_money').submit();">Submit</button>
+
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
   <script>
     $('.message a').click(function() {
       $('form').animate({

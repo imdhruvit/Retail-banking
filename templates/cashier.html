@@ -98,8 +98,8 @@
             <label for="section-1"><span>Operate Banking Transactions</span></label>
             <div class="content">
               <ul>
-                <li><i class="fa fa-plus"></i><span class="fn">Deposit Money</span></li>
-                <li><i class="fa fa-minus"></i><span class="fn">Withdraw Money</span></li>
+                <li onclick="window.location.href='{{ url_for('deposit_money') }}'"><i class="fa fa-plus"></i><span class="fn">Deposit Money</span></li>
+                <li onclick="window.location.href='{{ url_for('withdraw_money') }}'"><i class="fa fa-minus"></i><span class="fn">Withdraw Money</span></li>
                 <li><i class="fa fa-exchange"></i><span class="fn">Transfer Money</span></li>
                 <li onclick="window.location.href='{{ url_for('statement') }}'"><i class="fa fa-print"></i><span class="fn">Print Statement</span></li>
               </ul>

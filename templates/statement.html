@@ -127,9 +127,15 @@
             <h2 align="center" style="color:#000000 ;font-family: 'Roboto, sans-serif, bold'">Account Statement</h2>
             <p>Account ID: <input type="text" placeholder="42069" name="Account_id" id="Account_id" required pattern="[0-9]{10}" /></p>
               <br>
-              <input type="radio" id="r1" name="op" value="last" style="width:auto;"/><label for="r1">&nbsp;&nbsp;Last Number of Transactions</label><br>
-              <input type="radio" id="r2" name="op" value="dates" style="width:auto"/><label for="r2">&nbsp;&nbsp;Start-End Dates</label><br /><br>
-            <p>Number of Transactions: <input type="number" placeholder="2" name="nt" id="nt" required /></p>
+              <input type="radio" onclick="javascript:yesnoCheck();" id="r1" name="op" value="last" style="width:auto;"/><label for="r1">&nbsp;&nbsp;Last Number of Transactions</label><br>
+              <input type="radio" onclick="javascript:yesnoCheck();" id="r2" name="op" value="dates" style="width:auto"/><label for="r2">&nbsp;&nbsp;Start-End Dates</label><br />
+            <div id="r1_select" style="display:none">
+              <p>Number of Transactions: <input type="number" placeholder="2" required name="nt" id="nt"</p>
+            </div>
+            <div id="r2_select" style="display:none">
+              <p>Start Date: <input type="date" required name="sdate" id="sdate"</p><br>
+              <p>End Date: <input type="date" required name="edate" id="edate"</p>
+            </div>
             <button onclick="document.getElementById('account_statement').submit();">Submit</button>
 
           </form>
@@ -146,6 +152,15 @@
         opacity: "toggle"
       }, "slow");
     });
+    function yesnoCheck() {
+    if (document.getElementById('r1').checked) {
+        document.getElementById('r1_select').style.display = 'block';
+        document.getElementById('r2_select').style.display = 'none';
+    } else {
+      document.getElementById('r1_select').style.display = 'none';
+        document.getElementById('r2_select').style.display = 'block';
+    }
+  }
   </script>
 
   <script>

@@ -136,8 +136,9 @@
 
             <form class="login-form" id="search_customer">
               <h2 align="center" style="color:#000000 ;font-family: " Roboto", sans-serif, bold">Search Customer Details</h2>
-              <p>Enter SSN ID: <input type="text" required name="id" id="id" /></p>
-              <br>
+              <p>Enter SSN ID: <input type="text" name="id" id="id" /></p>
+              OR <br>
+              <p>Enter Customer ID: <input type="text" name="cid" id="cid" /></p>
               <div style="text-align: center">
                 <button id="sub_form">Search</button>
               </div>
@@ -169,7 +170,7 @@
                       <col width="300">
                       <tr>
                           <td id="sid"></td>
-                          <td id="cid"></td>
+                          <td id="custid"></td>
                           <td id="cname"></td>
                           <td id="cage"></td>
                           <td id="cadd"></td>
@@ -188,6 +189,13 @@
 </div>
 </div>
   <script>
+  jQuery(function ($) {
+    var $inputs = $('input[name=id],input[name=cid]');
+    $inputs.on('input', function () {
+        // Set the required property of the other input to false if this input is not empty.
+        $inputs.not(this).prop('required', !$(this).val().length);
+    });
+});
     $('.message a').click(function() {
       $('form').animate({
         height: "toggle",
@@ -224,15 +232,25 @@
 
     $(document).ready(function(){
     $("#sub_form").on('click', function postinput(e){
-        var ssn = $('input[name=id]').val(); // this.value
+        var sid = $('input[name=id]').val(); // this.value
+        var cid = $('input[name=cid]').val();
+        var ssn;
+        var sel;
+        if(sid){
+          ssn = sid;
+          sel = 1;
+        } else{
+          ssn = cid;
+          sel = 2;
+        }
         $.ajax({
             url: "{{url_for('search_c')}}",
-            data: { ssn: ssn },
+            data: { ssn: ssn , sel: sel},
             type: 'POST',
             dataType: "json"
         }).done(function(responseData) {
             document.getElementById("sid").innerHTML = responseData[0];
-            document.getElementById("cid").innerHTML = responseData[1];
+            document.getElementById("custid").innerHTML = responseData[1];
             document.getElementById("cname").innerHTML = responseData[2];
             document.getElementById("cage").innerHTML = responseData[3];
             document.getElementById("cadd").innerHTML = responseData[4];
