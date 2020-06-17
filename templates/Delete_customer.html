@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <title>Retail banking</title>
@@ -8,7 +7,18 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="stylesheet" href="Delete_customer.css">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="css/exec.css">
+<link rel="stylesheet" href="css/create_customer.css">
+
 
 <style>
   body,
@@ -28,12 +38,12 @@
   }
 
   /* Full height image header */
-  /*.bgimg-1 {
+  .bgimg-1 {
     background-position: center;
     background-size: cover;
     background-image: url("https://techcrunch.com/wp-content/uploads/2015/11/shutterstock_302406614.png?w=1390&crop=1");
     min-height: 100%;
-  }*/
+  }
 
   .w3-bar .w3-button {
     padding: 16px;
@@ -43,7 +53,7 @@
 <body>
 
   <!-- Navbar (sit on top) -->
-  <div class="w3-top">
+  <div class="w3-top" style="z-index:100">
     <div class="w3-bar w3-white w3-card" id="myNavbar">
       <a href="#home" class="w3-bar-item w3-button w3-wide">LOGO</a>
       <!-- Right-sided navbar links -->
@@ -52,7 +62,7 @@
         <a href="#about" class="w3-bar-item w3-button">ABOUT</a>
         <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> TEAM</a>
 
-        </div>
+      </div>
       <!-- Hide right-floated links on small screens and replace them with a menu icon -->
 
       <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
@@ -71,20 +81,62 @@
           <li><a href="#login" data-toggle="modal" data-target="#myModal">LOGIN</a></li>
         </ul>
       </div>
-    <div>
+      <div>
 
-    <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a>
-    <a href="#team" onclick="w3_close()" class="w3-bar-item w3-button">TEAM</a>
-    </nav>
+        <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a>
+        <a href="#team" onclick="w3_close()" class="w3-bar-item w3-button">TEAM</a>
+  </nav>
 
-  <!-- Header with full-height image -->
-  <header class="bgimg-1 w3-display-container w3-grayscale-min" id="home">
-  </header>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="left-menu">
+        <div class="logo">
+          <div>Executive Functions</div>
+        </div>
+        <div class="accordion">
+          <div class="section">
+            <input type="radio" name="accordion-1" id="section-1" checked="checked"/>
+            <label for="section-1"><span>Manage Customer Information</span></label>
+            <div class="content">
+              <ul>
+                <li onclick="window.location.href='{{ url_for('create_customer') }}'"><i class="fa fa-plus"></i><span class="fn">Create New Customer</span></li>
+                <li onclick="window.location.href='{{ url_for('update_customer') }}'"><i class="fa fa-pencil-square-o"></i><span class="fn">Update Customer</span></li>
+                <li><i class="fa fa-trash"></i><span class="fn">Delete Customer</span></li>
+                <li><i class="fa fa-list"></i><span class="fn">View Customers</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="section">
+            <input type="radio" name="accordion-1" id="section-2" value="toggle"/>
+            <label for="section-2"> <span>Manage Account Details</span></label>
+            <div class="content">
+              <ul>
+                <li><i class="fa fa-plus"></i><span class="fn">Create New Account</span></li>
+                <li><i class="fa fa-trash"></i><span class="fn">Delete Account</span></li>
+                <li><i class="fa fa-list"></i><span class="fn">View Accounts</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="section">
+            <input type="radio" name="accordion-1" id="section-3" value="toggle"/>
+            <label for="section-3"> <span>Search Customer</span></label>
+            <div class="content">
+              <ul>
+                <li id="load_search"><i class="fa fa-search"></i><span class="fn">Search and View</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-9" style="left:-50%;">
+      <div id="content" style="margin-bottom:80px">
+        <div class="login-page" id=myModal>
+        <div class="form">
 
-  <div class="login-page" id=myModal>
-  <div class="form">
 
-    <form class="login-form" id="delete_customer" method="post" action="http://localhost:5000/delete">
+    <form class="login-form" id="delete_customer" method="post" action="http://localhost:5000/delete_customer">
       <h2 align="center" style="color:#000000 ;font-family: 'Roboto', sans-serif, bold">Delete Customer Screen</h2>
       <p>Customer SSN ID: <input type="text" placeholder="6537645378" name="id" id="id" pattern="[0-9]{10}" /></p>
       <p>Customer ID: <input type="text" placeholder="65376" name="cid" id="cid" pattern="[0-9]{10}"/></p>
@@ -98,78 +150,12 @@
       </div>
 
     </form>
+        </div>
+      </div>
+      </div>
+    </div>
   </div>
 </div>
-
-<script>
-$('.message a').click(function(){
-   $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
-});
-</script>
-
-  <!-- Footer -->
-  <footer class="footer-distributed">
-
-    <div class="footer-left">
-
-      <h3>Company<span>logo</span></h3>
-
-      <p class="footer-links">
-        <a href="#" class="link-1">Home</a>
-
-        <a href="#">Blog</a>
-
-        <a href="#">Pricing</a>
-
-        <a href="#">About</a>
-
-        <a href="#">Faq</a>
-
-        <a href="#">Contact</a>
-      </p>
-
-      <p class="footer-company-name">Company Name © 2015</p>
-    </div>
-
-    <div class="footer-center">
-
-      <div>
-        <i class="fa fa-map-marker"></i>
-        <p><span>444 S. Cedros Ave</span> Solana Beach, California</p>
-      </div>
-
-      <div>
-        <i class="fa fa-phone"></i>
-        <p>+1.555.555.5555</p>
-      </div>
-
-      <div>
-        <i class="fa fa-envelope"></i>
-        <p><a href="mailto:support@company.com">support@company.com</a></p>
-      </div>
-
-    </div>
-
-    <div class="footer-right">
-
-      <p class="footer-company-about">
-        <span>About the company</span>
-        Lorem ipsum dolor sit amet, consectateur adispicing elit. Fusce euismod convallis velit, eu auctor lacus vehicula sit amet.
-      </p>
-
-      <div class="footer-icons">
-
-        <a href="#"><i class="fa fa-facebook"></i></a>
-        <a href="#"><i class="fa fa-twitter"></i></a>
-        <a href="#"><i class="fa fa-linkedin"></i></a>
-        <a href="#"><i class="fa fa-github"></i></a>
-
-      </div>
-
-    </div>
-
-  </footer>
-
   <script>
     // Modal Image Gallery
     function onClick(element) {

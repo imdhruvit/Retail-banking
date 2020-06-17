@@ -65,20 +65,25 @@ def create_customer():
             cur.close()
     return render_template('create_customer.html')
 
+@app.route('/delete_customer', methods=['GET','POST'])
+def delete_customer():
+    if request.method == "POST":
+        id = request.form['id']
+        try:
+            cur = mysql.connection.cursor()
+            sql = "DELETE from customer where id =%s;"
+            cur.execute(sql,(id,))
+            mysql.connection.commit()
+            return("done")
+        except Exception as e:
+            return(str(e))
+
+        finally:
+            cur.close()
+    return render_template('delete_customer.html')
+
 @app.route('/search_customer', methods=['GET', 'POST'])
 def search_customer():
-    # if request.method == "POST":
-    #     id = request.form['ssn']
-    #     try:
-    #         cur = mysql.connection.cursor()
-    #         sql = "SELECT id,Name,Age,Address,State,City from customer where id=%s"
-    #         cur.execute(sql,(id,))
-    #         record = cur.fetchone()
-    #         return jsonify(record)
-    #     except Exception as e:
-    #         return(str(e))
-    #     finally:
-    #         cur.close()
     if request.method == "GET":
         return render_template('search_customer.html')
 
@@ -144,6 +149,21 @@ def view_cust():
         cur.close()
 
     return render_template('view_cust.html', data=data)
+
+@app.route('/view_acc', methods=['GET', 'POST'])
+def view_acc():
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT Type, Cust_id, Account_id, Message, Timestamp from account")
+        data = cur.fetchall()
+        mysql.connection.commit()
+
+    except Exception as e:
+        return(str(e))
+    finally:
+        cur.close()
+
+    return render_template('view_acc.html', data=data)
 
 @app.route('/statement', methods=['GET','POST'])
 def statement():

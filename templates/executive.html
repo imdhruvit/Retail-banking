@@ -100,7 +100,7 @@
               <ul>
                 <li onclick="window.location.href='{{ url_for('create_customer') }}'"><i class="fa fa-plus"></i><span class="fn">Create New Customer</span></li>
                 <li onclick="window.location.href='{{ url_for('update_customer') }}'"><i class="fa fa-pencil-square-o"></i><span class="fn">Update Customer</span></li>
-                <li><i class="fa fa-trash"></i><span class="fn">Delete Customer</span></li>
+                <li onclick="window.location.href='{{ url_for('delete_customer') }}'"><i class="fa fa-trash"></i><span class="fn">Delete Customer</span></li>
                 <li onclick="window.location.href='{{ url_for('view_cust') }}'"><i class="fa fa-list"></i><span class="fn">View Customers</span></li>
               </ul>
             </div>
@@ -112,7 +112,7 @@
               <ul>
                 <li><i class="fa fa-plus"></i><span class="fn">Create New Account</span></li>
                 <li><i class="fa fa-trash"></i><span class="fn">Delete Account</span></li>
-                <li><i class="fa fa-list"></i><span class="fn">View Accounts</span></li>
+                <li onclick="window.location.href='{{ url_for('view_acc') }}'"><i class="fa fa-list"></i><span class="fn">View Accounts</span></li>
               </ul>
             </div>
           </div>
