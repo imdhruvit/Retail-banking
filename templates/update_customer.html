@@ -17,6 +17,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <link rel="stylesheet" href="css/exec.css">
+<link rel="stylesheet" href="css/Update_customer.css">
 
 <style>
   body,
@@ -130,11 +131,47 @@
     </div>
     <div class="col-sm-9" style="left:-50%;">
       <div id="content" style="margin-bottom:80px">
+        <div class="login-page" id=myModal>
+          <div class="form">
+
+            <form class="login-form" id="update_customer" method="post" action="http://localhost:5000/customer_update">
+              <h2 align="center" style="color:#000000 ;font-family: " Roboto, sans-serif, bold">Update Customer Screen</h2>
+              <p>Customer SSN ID: <input type="text" placeholder="6537645378" name="id" id="id" pattern="[0-9]{10}" /></p>
+              <!-- <p>Customer ID: <input type="text" placeholder="42069" name="cid" id="cid" pattern="[0-9]{10}" /></p> -->
+              <p>Old Customer Name: <input type="text" placeholder="Parth Patel" name="ocn" id="ocn" disabled/></p>
+              <p>New Customer Name: <input type="text" placeholder="Parth Patel New" name="ncn" id="ncn" maxlength="65" /></p>
+              <p>Old Address: <input type="text" placeholder="221B Baker street" name="oa" id="oa" disabled/></p>
+              <p>New Address: <input type="text" placeholder="Kaleen Bhaiya ki haveli Mirzapur" name="na" id="na" maxlength="128" /></p>
+              <p>Old Age: <input type="text" placeholder="21" name="oage" id="oage" disabled/></p>
+              <p>New Age: <input type="text" placeholder="69" name="nage" id="nage" min="18" max="120" /></p>
+              <button onclick="document.getElementById('update_customer').submit();">Update</button>
+
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
   <script>
+    $(document).ready(function(){
+    $("#id").on('focusout', function postinput(){
+        var ssn = $(this).val(); // this.value
+        $.ajax({
+            url: "{{url_for('get_old_data')}}",
+            data: { ssn: ssn },
+            type: 'POST',
+            dataType: "json"
+        }).done(function(responseData) {
+            document.getElementById("ocn").value=responseData[0];
+            document.getElementById("oa").value=responseData[2];
+            document.getElementById("oage").value=responseData[1];
+        }).fail(function(jqXHR) {
+                alert("error: " + jqXHR.status);
+                console.log(jqXHR);
+        });
+    });
+});
     $('.message a').click(function() {
       $('form').animate({
         height: "toggle",

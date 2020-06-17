@@ -1,72 +1,350 @@
-
 <!DOCTYPE html>
 <html>
+<title>Retail banking</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="css/exec.css">
 <link rel="stylesheet" href="css/create_customer.css">
 
+
+<style>
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Raleway", sans-serif
+  }
+
+  body,
+  html {
+    height: 100%;
+    line-height: 1.8;
+  }
+
+  /* Full height image header */
+  .bgimg-1 {
+    background-position: center;
+    background-size: cover;
+    background-image: url("https://techcrunch.com/wp-content/uploads/2015/11/shutterstock_302406614.png?w=1390&crop=1");
+    min-height: 100%;
+  }
+
+  .w3-bar .w3-button {
+    padding: 16px;
+  }
+</style>
+
 <body>
-  <div class="login-page" id="myModal">
-  <div class="form">
 
-    <form class="login-form" method="post" id="create_customer" action="http://localhost:5000/create">
-      <h2 align="center" style="color:#000000 ;font-family: "Roboto", sans-serif, bold">Create Customer Screen</h2>
-      <p>Customer SSN ID: <input type="text" placeholder="6537645378" required name="id" id="id" /></p>
-      <p>Customer Name: <input type="text" placeholder="Soham Dave" required name="Name" id="Name" /></p>
-      <p>Age: <input type="text" placeholder="21" required name="Age" id="Age" /></p>
-      <p>Address: <input type="text" placeholder="221 B Baker street" required name="Address" id="Address" /></p>
-      <p>State: </p>
-        <select required id="State" name="State" onchange="random_function()">
-            <option>select states</option>
-            <option>Andhra Pradesh</option>
-            <option>Arunachal Pradesh</option>
-            <option>Assam</option>
-            <option>Bihar</option>
-            <option>Chhattisgarh</option>
-            <option>Goa</option>
-            <option>Gujarat</option>
-            <option>Haryana</option>
-            <option>Himachal Pradesh</option>
-            <option>Jharkhand</option>
-            <option>Karnataka</option>
-            <option>Kerala</option>
-            <option>Madhya Pradesh</option>
-            <option>Maharashtra</option>
-            <option>Manipur</option>
-            <option>Meghalaya</option>
-            <option>Mizoram</option>
-            <option>Nagaland</option>
-            <option>Odisha</option>
-            <option>Punjab</option>
-            <option>Rajasthan</option>
-            <option>Sikkim</option>
-            <option>Tamil Nadu</option>
-            <option>Telangana</option>
-            <option>Tripura</option>
-            <option>Uttar Pradesh</option>
-            <option>Uttarakhand</option>
-            <option>West Bengal</option>
-        </select>
-      <p>City: </p>
-        <div class = "drop2">
-          <select id="City" name="City" required>
-            <option>select cities</option>
-          </select>
-        </div>
-        <br>
-        <div style="text-align: center">
-      <button onclick="document.getElementById('create_customer').submit();">Submit</button>
-      <button onclick="document.getElementById('create_customer').reset();">Reset</button>
-        </div>
+  <!-- Navbar (sit on top) -->
+  <div class="w3-top" style="z-index:100">
+    <div class="w3-bar w3-white w3-card" id="myNavbar">
+      <a href="#home" class="w3-bar-item w3-button w3-wide">LOGO</a>
+      <!-- Right-sided navbar links -->
+      <div class="w3-right w3-hide-small">
+        <a href="#login" class="w3-bar-item w3-button"> LOGIN</a>
+        <a href="#about" class="w3-bar-item w3-button">ABOUT</a>
+        <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> TEAM</a>
 
-    </form>
+      </div>
+      <!-- Hide right-floated links on small screens and replace them with a menu icon -->
+
+      <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Sidebar on small screens when clicking the menu icon -->
+  <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none" id="mySidebar">
+    <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
+
+    <div class="container" style="position:relative;">
+      <div class="w3l_sign_in_register category">
+        <ul>
+          <li><a href="#login" data-toggle="modal" data-target="#myModal">LOGIN</a></li>
+        </ul>
+      </div>
+      <div>
+
+        <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a>
+        <a href="#team" onclick="w3_close()" class="w3-bar-item w3-button">TEAM</a>
+  </nav>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="left-menu">
+        <div class="logo">
+          <div>Executive Functions</div>
+        </div>
+        <div class="accordion">
+          <div class="section">
+            <input type="radio" name="accordion-1" id="section-1" checked="checked"/>
+            <label for="section-1"><span>Manage Customer Information</span></label>
+            <div class="content">
+              <ul>
+                <li onclick="window.location.href='{{ url_for('create_customer') }}'"><i class="fa fa-plus"></i><span class="fn">Create New Customer</span></li>
+                <li onclick="window.location.href='{{ url_for('update_customer') }}'"><i class="fa fa-pencil-square-o"></i><span class="fn">Update Customer</span></li>
+                <li><i class="fa fa-trash"></i><span class="fn">Delete Customer</span></li>
+                <li><i class="fa fa-list"></i><span class="fn">View Customers</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="section">
+            <input type="radio" name="accordion-1" id="section-2" value="toggle"/>
+            <label for="section-2"> <span>Manage Account Details</span></label>
+            <div class="content">
+              <ul>
+                <li><i class="fa fa-plus"></i><span class="fn">Create New Account</span></li>
+                <li><i class="fa fa-trash"></i><span class="fn">Delete Account</span></li>
+                <li><i class="fa fa-list"></i><span class="fn">View Accounts</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="section">
+            <input type="radio" name="accordion-1" id="section-3" value="toggle"/>
+            <label for="section-3"> <span>Search Customer</span></label>
+            <div class="content">
+              <ul>
+                <li id="load_search"><i class="fa fa-search"></i><span class="fn">Search and View</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-9" style="left:-50%;">
+      <div id="content" style="margin-bottom:80px">
+        <div class="login-page" id=myModal>
+        <div class="form">
+
+          <form class="login-form" method="post" id="create_customer" action="http://localhost:5000/create_customer" >
+            <h2 align="center" style="color:#000000 ;font-family: 'Roboto', sans-serif, bold">Create Customer Screen</h2>
+            <p>Customer SSN ID: <input type="text" placeholder="6537645378" required name="id" id="id" pattern="[0-9]{10}" /></p>
+            <p>Customer Name: <input type="text" placeholder="Soham Dave" required name="Name" id="Name" maxlength="65" /></p>
+            <p>Age: <input type="number" placeholder="21" required name="Age" id="Age" min="18" max="120" /></p>
+            <p>Address: <input type="text" placeholder="221 B Baker street" required name="Address" id="Address" maxlength="128"/></p>
+            <p>State: </p>
+              <select id="State" name="State" required onchange="random_function()">
+                  <option></option>
+                  <option>Andhra Pradesh</option>
+                  <option>Arunachal Pradesh</option>
+                  <option>Assam</option>
+                  <option>Bihar</option>
+                  <option>Chhattisgarh</option>
+                  <option>Goa</option>
+                  <option>Gujarat</option>
+                  <option>Haryana</option>
+                  <option>Himachal Pradesh</option>
+                  <option>Jharkhand</option>
+                  <option>Karnataka</option>
+                  <option>Kerala</option>
+                  <option>Madhya Pradesh</option>
+                  <option>Maharashtra</option>
+                  <option>Manipur</option>
+                  <option>Meghalaya</option>
+                  <option>Mizoram</option>
+                  <option>Nagaland</option>
+                  <option>Odisha</option>
+                  <option>Punjab</option>
+                  <option>Rajasthan</option>
+                  <option>Sikkim</option>
+                  <option>Tamil Nadu</option>
+                  <option>Telangana</option>
+                  <option>Tripura</option>
+                  <option>Uttar Pradesh</option>
+                  <option>Uttarakhand</option>
+                  <option>West Bengal</option>
+              </select>
+            <p>City: </p>
+              <div class = "drop2">
+                <select id="City" name="City" required>
+                  <option>Select State First    </option>
+                </select>
+              </div>
+              <br>
+              <div style="text-align: center">
+            <button onclick="document.getElementById('create_customer').submit();">Submit</button>
+            <button type="reset" value="Reset">Reset</button>
+              </div>
+
+          </form>
+        </div>
+      </div>
+      </div>
+    </div>
   </div>
 </div>
-<br>
-
   <script>
-  $('.message a').click(function(){
-     $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
-  });
+  function random_function()
+              {
+                  var a=document.getElementById("State").value;
+                  if(a==="Andhra Pradesh")
+                  {
+                      var arr=["","Adilabad","Anantapur","Chittoor","Kakinada","Guntur","Hyderabad","Karimnagar","Khammam","Krishna","Kurnool","Mahbubnagar","Medak","Nalgonda","Nizamabad","Ongole","Hyderabad","Srikakulam","Nellore","Visakhapatnam","Vizianagaram","Warangal","Eluru","Kadapa"];
+                  }
+                  else if(a==="Arunachal Pradesh")
+                  {
+                      var arr=["","Anjaw","Changlang","East Siang","Kurung Kumey","Lohit","Lower Dibang Valley","Lower Subansiri","Papum Pare","Tawang","Tirap","Dibang Valley","Upper Siang","Upper Subansiri","West Kameng","West Siang"];
+                  }
+                  else if(a==="Assam")
+                  {
+                      var arr=["","Baksa","Barpeta","Bongaigaon","Cachar","Chirang","Darrang","Dhemaji","Dima Hasao","Dhubri","Dibrugarh","Goalpara","Golaghat","Hailakandi","Jorhat","Kamrup","Kamrup Metropolitan","Karbi Anglong","Karimganj","Kokrajhar","Lakhimpur","Marigaon","Nagaon","Nalbari","Sibsagar","Sonitpur","Tinsukia","Udalguri"];
+                  }
+                  else if(a==="Bihar")
+                  {
+                      var arr=["","Araria","Arwal","Aurangabad","Banka","Begusarai","Bhagalpur","Bhojpur","Buxar","Darbhanga","East Champaran","Gaya","Gopalganj","Jamui","Jehanabad","Kaimur","Katihar","Khagaria","Kishanganj","Lakhisarai","Madhepura","Madhubani","Munger","Muzaffarpur","Nalanda","Nawada","Patna","Purnia","Rohtas","Saharsa","Samastipur","Saran","Sheikhpura","Sheohar","Sitamarhi","Siwan","Supaul","Vaishal","West Champaran","Chandigarh"];
+                  }
+                  else if(a==="Chhattisgarh")
+                  {
+                      var arr=["","Bastar","Bijapur","Bilaspur","Dantewada","Dhamtari","Durg","Jashpur","Janjgir-Champa","Korba","Koriya","Kanker","Kabirdham (Kawardha)","Mahasamund","Narayanpur","Raigarh","Rajnandgaon","Raipur","Surguja"];
+                  }
+                  else if(a==="Goa")
+                  {
+                      var arr=["","North Goa","South Goa"];
+                  }
+                  else if(a==="Gujarat")
+                  {
+                      var arr=["","Ahmedabad","Amreli","Anand","Banaskantha","Bharuch","Bhavnagar","Dahod","The Dangs","Gandhinagar","Jamnagar","Junagadh","Kutch","Kheda","Mehsana","Narmada","Navsari","Patan","Panchmahal","Porbandar","Rajkot","Sabarkantha","Surendranagar","Surat","Vyara","Vadodara","Valsad"];
+                  }
+                  else if(a==="Haryana")
+                  {
+                      var arr=["","Ambala","Bhiwani","Faridabad","Fatehabad","Gurgaon","Hissar","Jhajjar","Jind","Karnal","Kaithal","Kurukshetra","Mahendragarh","Mewat","Palwal","Panchkula","Panipat","Rewari","Rohtak","Sirsa","Sonipat","Yamuna Nagar"];
+                  }
+                  else if(a==="Himachal Pradesh")
+                  {
+                      var arr=["","Bilaspur","Chamba","Hamirpur","Kangra","Kinnaur","Kullu","Lahaul and Spiti","Mandi","Shimla","Sirmaur","Solan","Una"];
+                  }
+                  else if(a==="Jharkhand")
+                  {
+                      var arr=["","Bokaro","Chatra","Deoghar","Dhanbad","Dumka","East Singhbhum","Garhwa","Giridih","Godda","Gumla","Hazaribag","Jamtara","Khunti","Koderma","Latehar","Lohardaga","Pakur","Palamu","Ramgarh","Ranchi","Sahibganj","Seraikela Kharsawan","Simdega","West Singhbhum"];
+                  }
+                  else if(a==="Karnataka")
+                  {
+                      var arr=["","Bagalkot","Bangalore Rural","Bangalore Urban","Belgaum","Bellary","Bidar","Bijapur","Chamarajnagar","Chikkamagaluru","Chikkaballapur","Chitradurga","Davanagere","Dharwad","Dakshina Kannada","Gadag","Gulbarga","Hassan","Haveri district","Kodagu","Kolar","Koppal","Mandya","Mysore","Raichur","Shimoga","Tumkur","Udupi","Uttara Kannada","Ramanagara","Yadgir"];
+                  }
+                  else if(a==="Kerala")
+                  {
+                      var arr=["","Alappuzha","Ernakulam","Idukki","Kannur","Kasaragod","Kollam","Kottayam","Kozhikode","Malappuram","Palakkad","Pathanamthitta","Thrissur","Thiruvananthapuram","Wayanad"];
+                  }
+                  else if(a==="Madhya Pradesh")
+                  {
+                      var arr=["","Alirajpur","Anuppur","Ashok Nagar","Balaghat","Barwani","Betul","Bhind","Bhopal","Burhanpur","Chhatarpur","Chhindwara","Damoh","Datia","Dewas","Dhar","Dindori","Guna","Gwalior","Harda","Hoshangabad","Indore","Jabalpur","Jhabua","Katni","Khandwa (East Nimar)","Khargone (West Nimar)","Mandla","Mandsaur","Morena","Narsinghpur","Neemuch","Panna","Rewa","Rajgarh","Ratlam","Raisen","Sagar","Satna","Sehore","Seoni","Shahdol","Shajapur","Sheopur","Shivpuri","Sidhi","Singrauli","Tikamgarh","Ujjain","Umaria","Vidisha"];
+                  }
+                  else if(a==="Maharashtra")
+                  {
+                      var arr=["","Ahmednagar","Akola","Amravati","Aurangabad","Bhandara","Beed","Buldhana","Chandrapur","Dhule","Gadchiroli","Gondia","Hingoli","Jalgaon","Jalna","Kolhapur","Latur","Mumbai City","Mumbai suburban","Nandurbar","Nanded","Nagpur","Nashik","Osmanabad","Parbhani","Pune","Raigad","Ratnagiri","Sindhudurg","Sangli","Solapur","Satara","Thane","Wardha","Washim","Yavatmal"];
+                  }
+                  else if(a==="Manipur")
+                  {
+                      var arr=["","Bishnupur","Churachandpur","Chandel","Imphal East","Senapati","Tamenglong","Thoubal","Ukhrul","Imphal West"];
+                  }
+                  else if(a==="Meghalaya")
+                  {
+                      var arr=["","East Garo Hills","East Khasi Hills","Jaintia Hills","Ri Bhoi","South Garo Hills","West Garo Hills","West Khasi Hills"];
+                  }
+                  else if(a==="Mizoram")
+                  {
+                      var arr=["","Aizawl","Champhai","Kolasib","Lawngtlai","Lunglei","Mamit","Saiha","Serchhip"];
+                  }
+                  else if(a==="Nagaland")
+                  {
+                      var arr=["","Dimapur","Kohima","Mokokchung","Mon","Phek","Tuensang","Wokha","Zunheboto"];
+                  }
+                  else if(a==="Odisha")
+                  {
+                      var arr=["","Angul","Boudh (Bauda)","Bhadrak","Balangir","Bargarh (Baragarh)","Balasore","Cuttack","Debagarh (Deogarh)","Dhenkanal","Ganjam","Gajapati","Jharsuguda","Jajpur","Jagatsinghpur","Khordha","Kendujhar (Keonjhar)","Kalahandi","Kandhamal","Koraput","Kendrapara","Malkangiri","Mayurbhanj","Nabarangpur","Nuapada","Nayagarh","Puri","Rayagada","Sambalpur","Subarnapur (Sonepur)","Sundergarh"];
+                  }
+                  else if(a==="Punjab")
+                  {
+                      var arr=["","Amritsar","Barnala","Bathinda","Firozpur","Faridkot","Fatehgarh Sahib","Fazilka","Gurdaspur","Hoshiarpur","Jalandhar","Kapurthala","Ludhiana","Mansa","Moga","Sri Muktsar Sahib","Pathankot","Patiala","Rupnagar","Ajitgarh (Mohali)","Sangrur","Nawanshahr","Tarn Taran"];
+                  }
+                  else if(a==="Rajasthan")
+                  {
+                      var arr=["","Ajmer","Alwar","Bikaner","Barmer","Banswara","Bharatpur","Baran","Bundi","Bhilwara","Churu","Chittorgarh","Dausa","Dholpur","Dungapur","Ganganagar","Hanumangarh","Jhunjhunu","Jalore","Jodhpur","Jaipur","Jaisalmer","Jhalawar","Karauli","Kota","Nagaur","Pali","Pratapgarh","Rajsamand","Sikar","Sawai Madhopur","Sirohi","Tonk","Udaipur"];
+                  }
+                  else if(a==="Sikkim")
+                  {
+                      var arr=["","East Sikkim","North Sikkim","South Sikkim","West Sikkim"];
+                  }
+                  else if(a==="Tamil Nadu")
+                  {
+                      var arr=["","Ariyalur","Chennai","Coimbatore","Cuddalore","Dharmapuri","Dindigul","Erode","Kanchipuram","Kanyakumari","Karur","Madurai","Nagapattinam","Nilgiris","Namakkal","Perambalur","Pudukkottai","Ramanathapuram","Salem","Sivaganga","Tirupur","Tiruchirappalli","Theni","Tirunelveli","Thanjavur","Thoothukudi","Tiruvallur","Tiruvarur","Tiruvannamalai","Vellore","Viluppuram","Virudhunagar"];
+                  }
+                  else if(a==="Tripura")
+                  {
+                      var arr=["","Dhalai","North Tripura","South Tripura","Khowai","West Tripura"];
+                  }
+                  else if(a==="Uttar Pradesh")
+                  {
+                      var arr=["","Agra","Allahabad","Aligarh","Ambedkar Nagar","Auraiya","Azamgarh","Barabanki","Budaun","Bagpat","Bahraich","Bijnor","Ballia","Banda","Balrampur","Bareilly","Basti","Bulandshahr","Chandauli","Chhatrapati Shahuji Maharaj Nagar","Chitrakoot","Deoria","Etah","Kanshi Ram Nagar","Etawah","Firozabad","Farrukhabad","Fatehpur","Faizabad","Gautam Buddh Nagar","Gonda","Ghazipur","Gorakhpur","Ghaziabad","Hamirpur","Hardoi","Mahamaya Nagar","Jhansi","Jalaun","Jyotiba Phule Nagar","Jaunpur district","Ramabai Nagar (Kanpur Dehat)","Kannauj","Kanpur","Kaushambi","Kushinagar","Lalitpur","Lakhimpur Kheri","Lucknow","Mau","Meerut","Maharajganj","Mahoba","Mirzapur","Moradabad","Mainpuri","Mathura","Muzaffarnagar","Panchsheel Nagar district (Hapur)","Pilibhit","Shamli","Pratapgarh","Rampur","Raebareli","Saharanpur","Sitapur","Shahjahanpur","Sant Kabir Nagar","Siddharthnagar","Sonbhadra","Sant Ravidas Nagar","Sultanpur","Shravasti","Unnao","Varanasi"];
+                  }
+                  else if(a==="Uttarakhand")
+                  {
+                      var arr=["","Almora","Bageshwar","Chamoli","Champawat","Dehradun","Haridwar","Nainital","Pauri Garhwal","Pithoragarh","Rudraprayag","Tehri Garhwal","Udham Singh Nagar","Uttarkashi"];
+                  }
+                  else if(a==="West Bengal")
+                  {
+                      var arr=["","Birbhum","Bankura","Bardhaman","Darjeeling","Dakshin Dinajpur","Hooghly","Howrah","Jalpaiguri","Cooch Behar","Kolkata","Maldah","Paschim Medinipur","Purba Medinipur","Murshidabad","Nadia","North 24 Parganas","South 24 Parganas","Purulia","Uttar Dinajpur"];
+                  }
+                  else if(a==="Telangana")
+                  {
+                      var arr=["","Adilabad","Komaram Bheem","hadradri Kothagudem","Hyderabad","Jagtial","Jangaon","Karimnagar","Khammam","Mahabubabad","Mahbubnagar","Medak","Nalgonda","Nizamabad","Ranga Reddy","Warangal Urban"];
+                  }
+                  else
+                  {
+                      var arr=[];
+                  }
+
+                  var string="";
+
+                  for(i=0;i<arr.length;i++)
+                  {
+                      string=string+"<option value="+arr[i]+">"+arr[i]+"</option>";
+                      /*string=string+"<option>"+arr[i]+"</option>";*/
+                  }
+                  /*string="<select name='lol'>"+string+"</select>";*/
+                  document.getElementById("City").innerHTML=string;
+              }
+              function Validate()
+  			{
+  				var e = document.getElementById("State");
+  				var strUser = e.options[e.selectedIndex].value;
+  				//if you need text to be compared then use
+  				var strUser1 = e.options[e.selectedIndex].text;
+  				if(strUser1=="Select")
+  				{
+  					alert("Please select a user");
+  				}
+  			}
+    $('.message a').click(function() {
+      $('form').animate({
+        height: "toggle",
+        opacity: "toggle"
+      }, "slow");
+    });
+    $(document).ready( function() {
+    $("#load_search").on("click", function() {
+        $("#content").load("/customer_search");
+    });
+});
   </script>
 
   <script>
@@ -94,139 +372,6 @@
     function w3_close() {
       mySidebar.style.display = "none";
     }
-  </script>
-  <script type="text/javascript">
-  function random_function()
-              {
-                  var a=document.getElementById("State").value;
-                  if(a==="Andhra Pradesh")
-                  {
-                      var arr=["Adilabad","Anantapur","Chittoor","Kakinada","Guntur","Hyderabad","Karimnagar","Khammam","Krishna","Kurnool","Mahbubnagar","Medak","Nalgonda","Nizamabad","Ongole","Hyderabad","Srikakulam","Nellore","Visakhapatnam","Vizianagaram","Warangal","Eluru","Kadapa"];
-                  }
-                  else if(a==="Arunachal Pradesh")
-                  {
-                      var arr=["Anjaw","Changlang","East Siang","Kurung Kumey","Lohit","Lower Dibang Valley","Lower Subansiri","Papum Pare","Tawang","Tirap","Dibang Valley","Upper Siang","Upper Subansiri","West Kameng","West Siang"];
-                  }
-                  else if(a==="Assam")
-                  {
-                      var arr=["Baksa","Barpeta","Bongaigaon","Cachar","Chirang","Darrang","Dhemaji","Dima Hasao","Dhubri","Dibrugarh","Goalpara","Golaghat","Hailakandi","Jorhat","Kamrup","Kamrup Metropolitan","Karbi Anglong","Karimganj","Kokrajhar","Lakhimpur","Marigaon","Nagaon","Nalbari","Sibsagar","Sonitpur","Tinsukia","Udalguri"];
-                  }
-                  else if(a==="Bihar")
-                  {
-                      var arr=["Araria","Arwal","Aurangabad","Banka","Begusarai","Bhagalpur","Bhojpur","Buxar","Darbhanga","East Champaran","Gaya","Gopalganj","Jamui","Jehanabad","Kaimur","Katihar","Khagaria","Kishanganj","Lakhisarai","Madhepura","Madhubani","Munger","Muzaffarpur","Nalanda","Nawada","Patna","Purnia","Rohtas","Saharsa","Samastipur","Saran","Sheikhpura","Sheohar","Sitamarhi","Siwan","Supaul","Vaishal","West Champaran","Chandigarh"];
-                  }
-                  else if(a==="Chhattisgarh")
-                  {
-                      var arr=["Bastar","Bijapur","Bilaspur","Dantewada","Dhamtari","Durg","Jashpur","Janjgir-Champa","Korba","Koriya","Kanker","Kabirdham (Kawardha)","Mahasamund","Narayanpur","Raigarh","Rajnandgaon","Raipur","Surguja"];
-                  }
-                  else if(a==="Goa")
-                  {
-                      var arr=["North Goa","South Goa"];
-                  }
-                  else if(a==="Gujarat")
-                  {
-                      var arr=["Ahmedabad","Amreli","Anand","Banaskantha","Bharuch","Bhavnagar","Dahod","The Dangs","Gandhinagar","Jamnagar","Junagadh","Kutch","Kheda","Mehsana","Narmada","Navsari","Patan","Panchmahal","Porbandar","Rajkot","Sabarkantha","Surendranagar","Surat","Vyara","Vadodara","Valsad"];
-                  }
-                  else if(a==="Haryana")
-                  {
-                      var arr=["Ambala","Bhiwani","Faridabad","Fatehabad","Gurgaon","Hissar","Jhajjar","Jind","Karnal","Kaithal","Kurukshetra","Mahendragarh","Mewat","Palwal","Panchkula","Panipat","Rewari","Rohtak","Sirsa","Sonipat","Yamuna Nagar"];
-                  }
-                  else if(a==="Himachal Pradesh")
-                  {
-                      var arr=["Bilaspur","Chamba","Hamirpur","Kangra","Kinnaur","Kullu","Lahaul and Spiti","Mandi","Shimla","Sirmaur","Solan","Una"];
-                  }
-                  else if(a==="Jharkhand")
-                  {
-                      var arr=["Bokaro","Chatra","Deoghar","Dhanbad","Dumka","East Singhbhum","Garhwa","Giridih","Godda","Gumla","Hazaribag","Jamtara","Khunti","Koderma","Latehar","Lohardaga","Pakur","Palamu","Ramgarh","Ranchi","Sahibganj","Seraikela Kharsawan","Simdega","West Singhbhum"];
-                  }
-                  else if(a==="Karnataka")
-                  {
-                      var arr=["Bagalkot","Bangalore Rural","Bangalore Urban","Belgaum","Bellary","Bidar","Bijapur","Chamarajnagar","Chikkamagaluru","Chikkaballapur","Chitradurga","Davanagere","Dharwad","Dakshina Kannada","Gadag","Gulbarga","Hassan","Haveri district","Kodagu","Kolar","Koppal","Mandya","Mysore","Raichur","Shimoga","Tumkur","Udupi","Uttara Kannada","Ramanagara","Yadgir"];
-                  }
-                  else if(a==="Kerala")
-                  {
-                      var arr=["Alappuzha","Ernakulam","Idukki","Kannur","Kasaragod","Kollam","Kottayam","Kozhikode","Malappuram","Palakkad","Pathanamthitta","Thrissur","Thiruvananthapuram","Wayanad"];
-                  }
-                  else if(a==="Madhya Pradesh")
-                  {
-                      var arr=["Alirajpur","Anuppur","Ashok Nagar","Balaghat","Barwani","Betul","Bhind","Bhopal","Burhanpur","Chhatarpur","Chhindwara","Damoh","Datia","Dewas","Dhar","Dindori","Guna","Gwalior","Harda","Hoshangabad","Indore","Jabalpur","Jhabua","Katni","Khandwa (East Nimar)","Khargone (West Nimar)","Mandla","Mandsaur","Morena","Narsinghpur","Neemuch","Panna","Rewa","Rajgarh","Ratlam","Raisen","Sagar","Satna","Sehore","Seoni","Shahdol","Shajapur","Sheopur","Shivpuri","Sidhi","Singrauli","Tikamgarh","Ujjain","Umaria","Vidisha"];
-                  }
-                  else if(a==="Maharashtra")
-                  {
-                      var arr=["Ahmednagar","Akola","Amravati","Aurangabad","Bhandara","Beed","Buldhana","Chandrapur","Dhule","Gadchiroli","Gondia","Hingoli","Jalgaon","Jalna","Kolhapur","Latur","Mumbai City","Mumbai suburban","Nandurbar","Nanded","Nagpur","Nashik","Osmanabad","Parbhani","Pune","Raigad","Ratnagiri","Sindhudurg","Sangli","Solapur","Satara","Thane","Wardha","Washim","Yavatmal"];
-                  }
-                  else if(a==="Manipur")
-                  {
-                      var arr=["Bishnupur","Churachandpur","Chandel","Imphal East","Senapati","Tamenglong","Thoubal","Ukhrul","Imphal West"];
-                  }
-                  else if(a==="Meghalaya")
-                  {
-                      var arr=["East Garo Hills","East Khasi Hills","Jaintia Hills","Ri Bhoi","South Garo Hills","West Garo Hills","West Khasi Hills"];
-                  }
-                  else if(a==="Mizoram")
-                  {
-                      var arr=["Aizawl","Champhai","Kolasib","Lawngtlai","Lunglei","Mamit","Saiha","Serchhip"];
-                  }
-                  else if(a==="Nagaland")
-                  {
-                      var arr=["Dimapur","Kohima","Mokokchung","Mon","Phek","Tuensang","Wokha","Zunheboto"];
-                  }
-                  else if(a==="Odisha")
-                  {
-                      var arr=["Angul","Boudh (Bauda)","Bhadrak","Balangir","Bargarh (Baragarh)","Balasore","Cuttack","Debagarh (Deogarh)","Dhenkanal","Ganjam","Gajapati","Jharsuguda","Jajpur","Jagatsinghpur","Khordha","Kendujhar (Keonjhar)","Kalahandi","Kandhamal","Koraput","Kendrapara","Malkangiri","Mayurbhanj","Nabarangpur","Nuapada","Nayagarh","Puri","Rayagada","Sambalpur","Subarnapur (Sonepur)","Sundergarh"];
-                  }
-                  else if(a==="Punjab")
-                  {
-                      var arr=["Amritsar","Barnala","Bathinda","Firozpur","Faridkot","Fatehgarh Sahib","Fazilka","Gurdaspur","Hoshiarpur","Jalandhar","Kapurthala","Ludhiana","Mansa","Moga","Sri Muktsar Sahib","Pathankot","Patiala","Rupnagar","Ajitgarh (Mohali)","Sangrur","Nawanshahr","Tarn Taran"];
-                  }
-                  else if(a==="Rajasthan")
-                  {
-                      var arr=["Ajmer","Alwar","Bikaner","Barmer","Banswara","Bharatpur","Baran","Bundi","Bhilwara","Churu","Chittorgarh","Dausa","Dholpur","Dungapur","Ganganagar","Hanumangarh","Jhunjhunu","Jalore","Jodhpur","Jaipur","Jaisalmer","Jhalawar","Karauli","Kota","Nagaur","Pali","Pratapgarh","Rajsamand","Sikar","Sawai Madhopur","Sirohi","Tonk","Udaipur"];
-                  }
-                  else if(a==="Sikkim")
-                  {
-                      var arr=["East Sikkim","North Sikkim","South Sikkim","West Sikkim"];
-                  }
-                  else if(a==="Tamil Nadu")
-                  {
-                      var arr=["Ariyalur","Chennai","Coimbatore","Cuddalore","Dharmapuri","Dindigul","Erode","Kanchipuram","Kanyakumari","Karur","Madurai","Nagapattinam","Nilgiris","Namakkal","Perambalur","Pudukkottai","Ramanathapuram","Salem","Sivaganga","Tirupur","Tiruchirappalli","Theni","Tirunelveli","Thanjavur","Thoothukudi","Tiruvallur","Tiruvarur","Tiruvannamalai","Vellore","Viluppuram","Virudhunagar"];
-                  }
-                  else if(a==="Tripura")
-                  {
-                      var arr=["Dhalai","North Tripura","South Tripura","Khowai","West Tripura"];
-                  }
-                  else if(a==="Uttar Pradesh")
-                  {
-                      var arr=["Agra","Allahabad","Aligarh","Ambedkar Nagar","Auraiya","Azamgarh","Barabanki","Budaun","Bagpat","Bahraich","Bijnor","Ballia","Banda","Balrampur","Bareilly","Basti","Bulandshahr","Chandauli","Chhatrapati Shahuji Maharaj Nagar","Chitrakoot","Deoria","Etah","Kanshi Ram Nagar","Etawah","Firozabad","Farrukhabad","Fatehpur","Faizabad","Gautam Buddh Nagar","Gonda","Ghazipur","Gorakhpur","Ghaziabad","Hamirpur","Hardoi","Mahamaya Nagar","Jhansi","Jalaun","Jyotiba Phule Nagar","Jaunpur district","Ramabai Nagar (Kanpur Dehat)","Kannauj","Kanpur","Kaushambi","Kushinagar","Lalitpur","Lakhimpur Kheri","Lucknow","Mau","Meerut","Maharajganj","Mahoba","Mirzapur","Moradabad","Mainpuri","Mathura","Muzaffarnagar","Panchsheel Nagar district (Hapur)","Pilibhit","Shamli","Pratapgarh","Rampur","Raebareli","Saharanpur","Sitapur","Shahjahanpur","Sant Kabir Nagar","Siddharthnagar","Sonbhadra","Sant Ravidas Nagar","Sultanpur","Shravasti","Unnao","Varanasi"];
-                  }
-                  else if(a==="Uttarakhand")
-                  {
-                      var arr=["Almora","Bageshwar","Chamoli","Champawat","Dehradun","Haridwar","Nainital","Pauri Garhwal","Pithoragarh","Rudraprayag","Tehri Garhwal","Udham Singh Nagar","Uttarkashi"];
-                  }
-                  else if(a==="West Bengal")
-                  {
-                      var arr=["Birbhum","Bankura","Bardhaman","Darjeeling","Dakshin Dinajpur","Hooghly","Howrah","Jalpaiguri","Cooch Behar","Kolkata","Maldah","Paschim Medinipur","Purba Medinipur","Murshidabad","Nadia","North 24 Parganas","South 24 Parganas","Purulia","Uttar Dinajpur"];
-                  }
-                  else if(a==="Telangana")
-                  {
-                      var arr=["Adilabad","Komaram Bheem","hadradri Kothagudem","Hyderabad","Jagtial","Jangaon","Karimnagar","Khammam","Mahabubabad","Mahbubnagar","Medak","Nalgonda","Nizamabad","Ranga Reddy","Warangal Urban"];
-                  }
-                  else
-                  {
-                      var arr=[];
-                  }
-
-                  var string="";
-
-                  for(i=0;i<arr.length;i++)
-                  {
-                      string=string+"<option value="+arr[i]+">"+arr[i]+"</option>";
-                      /*string=string+"<option>"+arr[i]+"</option>";*/
-                  }
-                  /*string="<select name='lol'>"+string+"</select>";*/
-                  document.getElementById("City").innerHTML=string;
-              }
-
   </script>
 
 </body>
