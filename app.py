@@ -80,10 +80,11 @@ def customer_search():
 @app.route('/update_customer', methods=['GET', 'POST'])
 def update_customer():
     if request.method == "POST":
+        print(request.form)
         id = request.form['id']
-        Name = request.form['Name']
-        Age = request.form['Age']
-        Address = request.form['Address']
+        Name = request.form['ncn']
+        Age = request.form['nage']
+        Address = request.form['na']
         try:
             cur = mysql.connection.cursor()
             val = (Name,Age,Address,id)
