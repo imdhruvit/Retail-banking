@@ -17,6 +17,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <link rel="stylesheet" href="css/exec.css">
+<link rel="stylesheet" href="css/search_customer.css">
 
 <style>
   body,
@@ -101,7 +102,7 @@
                 <li onclick="window.location.href='{{ url_for('create_customer') }}'"><i class="fa fa-plus"></i><span class="fn">Create New Customer</span></li>
                 <li onclick="window.location.href='{{ url_for('update_customer') }}'"><i class="fa fa-pencil-square-o"></i><span class="fn">Update Customer</span></li>
                 <li><i class="fa fa-trash"></i><span class="fn">Delete Customer</span></li>
-                <li onclick="window.location.href='{{ url_for('view_cust') }}'"><i class="fa fa-list"></i><span class="fn">View Customers</span></li>
+                <li><i class="fa fa-list"></i><span class="fn">View Customers</span></li>
               </ul>
             </div>
           </div>
@@ -121,18 +122,70 @@
             <label for="section-3"> <span>Search Customer</span></label>
             <div class="content">
               <ul>
-                <li onclick="window.location.href='{{ url_for('search_customer') }}'"><i class="fa fa-search"></i><span class="fn">Search and View</span></li>
+                <li><i class="fa fa-search"></i><span class="fn">Search and View</span></li>
               </ul>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-sm-9" style="left:-50%;">
+    <div class="col-sm-9" style="left:-73%;">
       <div id="content" style="margin-bottom:80px">
+        <div class="login-page" id="myModal">
+          <div class="form">
+
+            <form class="login-form" id="search_customer">
+              <h2 align="center" style="color:#000000 ;font-family: " Roboto", sans-serif, bold">Search Customer Details</h2>
+              <p>Enter SSN ID: <input type="text" required name="id" id="id" /></p>
+              <br>
+              <div style="text-align: center">
+                <button id="sub_form">Search</button>
+              </div>
+            </form>
+          <div id="result">
+            <br>
+            <table id="search_result">
+            <thead>
+              <tr>
+                <th>SSN ID</th>
+                <th>Customer ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Last Updated</th>
+              </tr>
+            </thead>
+
+            <tbody>
+            <col width="220">
+              <col width="220">
+                <col width="200">
+                  <col width="120">
+                    <col width="300">
+                      <col width="300">
+                      <col width="300">
+                      <col width="300">
+                      <tr>
+                          <td id="sid"></td>
+                          <td id="cid"></td>
+                          <td id="cname"></td>
+                          <td id="cage"></td>
+                          <td id="cadd"></td>
+                          <td id="ccity"></td>
+                          <td id="cstate"></td>
+                          <td id="clast"></td>
+                      </tr>
+            </tbody>
+
+            </table>
+          </div>
       </div>
     </div>
   </div>
+</div>
+</div>
 </div>
   <script>
     $('.message a').click(function() {
@@ -168,6 +221,31 @@
     function w3_close() {
       mySidebar.style.display = "none";
     }
+
+    $(document).ready(function(){
+    $("#sub_form").on('click', function postinput(e){
+        var ssn = $('input[name=id]').val(); // this.value
+        $.ajax({
+            url: "{{url_for('search_c')}}",
+            data: { ssn: ssn },
+            type: 'POST',
+            dataType: "json"
+        }).done(function(responseData) {
+            document.getElementById("sid").innerHTML = responseData[0];
+            document.getElementById("cid").innerHTML = responseData[1];
+            document.getElementById("cname").innerHTML = responseData[2];
+            document.getElementById("cage").innerHTML = responseData[3];
+            document.getElementById("cadd").innerHTML = responseData[4];
+            document.getElementById("ccity").innerHTML = responseData[5];
+            document.getElementById("cstate").innerHTML = responseData[6];
+            document.getElementById("clast").innerHTML = responseData[7];
+        }).fail(function(jqXHR) {
+                alert("error: " + jqXHR.status);
+                console.log(jqXHR);
+        });
+        e.preventDefault(e);
+    });
+});
   </script>
 
 </body>

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request,jsonify
 from flask_mysqldb import MySQL
-import os
+import os,json
 app = Flask(__name__,static_url_path='',static_folder='static',template_folder='templates')
 
 app.config['MYSQL_HOST'] = 'localhost'
@@ -9,6 +9,13 @@ app.config['MYSQL_PASSWORD'] = 'toor'
 app.config['MYSQL_DB'] = 'retail_bank'
 
 mysql = MySQL(app)
+
+class CustomJsonEncoder(json.JSONEncoder):
+
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return float(obj)
+        return super(CustomJsonEncoder, self).default(obj)
 
 @app.route('/')
 def index():
@@ -58,29 +65,26 @@ def create_customer():
             cur.close()
     return render_template('create_customer.html')
 
-@app.route('/customer_search', methods=['GET', 'POST'])
-def customer_search():
-    if request.method == "POST":
-        id = request.form['id']
-        print(id)
-        try:
-            cur = mysql.connection.cursor()
-            sql = "SELECT id,Name,Age,Address,State,City from customer where id=%s"
-            cur.execute(sql,(id,))
-            record = cur.fetchone()
-            print(record)
-            return {"result":record}
-        except Exception as e:
-            return(str(e))
-        finally:
-            cur.close()
+@app.route('/search_customer', methods=['GET', 'POST'])
+def search_customer():
+    # if request.method == "POST":
+    #     id = request.form['ssn']
+    #     try:
+    #         cur = mysql.connection.cursor()
+    #         sql = "SELECT id,Name,Age,Address,State,City from customer where id=%s"
+    #         cur.execute(sql,(id,))
+    #         record = cur.fetchone()
+    #         return jsonify(record)
+    #     except Exception as e:
+    #         return(str(e))
+    #     finally:
+    #         cur.close()
     if request.method == "GET":
-        return render_template('customer_search.html')
+        return render_template('search_customer.html')
 
 @app.route('/update_customer', methods=['GET', 'POST'])
 def update_customer():
     if request.method == "POST":
-        print(request.form)
         id = request.form['id']
         Name = request.form['ncn']
         Age = request.form['nage']
@@ -98,6 +102,20 @@ def update_customer():
     elif request.method == "GET":
         return render_template('update_customer.html')
 
+@app.route('/search_c', methods=['POST'])
+def search_c():
+    id = request.form['ssn']
+    try:
+        cur = mysql.connection.cursor()
+        sql = "SELECT id,Cust_id,Name,Age,Address,State,City,Timestamp from customer where id=%s"
+        cur.execute(sql,(id,))
+        record = cur.fetchone()
+        return jsonify(record)
+    except Exception as e:
+        return(str(e))
+    finally:
+        cur.close()
+
 @app.route('/get_old_data', methods=['POST'])
 def get_old_data():
     id = request.form['ssn']
@@ -111,5 +129,25 @@ def get_old_data():
         return(str(e))
     finally:
         cur.close()
+
+@app.route('/view_cust', methods=['GET', 'POST'])
+def view_cust():
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT id, Cust_id, Message, Timestamp from customer")
+        data = cur.fetchall()
+        mysql.connection.commit()
+
+    except Exception as e:
+        return(str(e))
+    finally:
+        cur.close()
+
+    return render_template('view_cust.html', data=data)
+
+@app.route('/statement', methods=['GET','POST'])
+def statement():
+    return render_template('statement.html')
+
 if __name__ == '__main__':
         app.run()

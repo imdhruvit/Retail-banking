@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>Retail banking</title>
+<title>View Customer | Retail banking</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -17,6 +17,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <link rel="stylesheet" href="css/exec.css">
+<link rel="stylesheet" href="css/view_cust.css">
 
 <style>
   body,
@@ -85,6 +86,7 @@
         <a href="#team" onclick="w3_close()" class="w3-bar-item w3-button">TEAM</a>
   </nav>
 
+
 <div class="container">
   <div class="row">
     <div class="col-sm-3">
@@ -98,10 +100,10 @@
             <label for="section-1"><span>Manage Customer Information</span></label>
             <div class="content">
               <ul>
-                <li onclick="window.location.href='{{ url_for('create_customer') }}'"><i class="fa fa-plus"></i><span class="fn">Create New Customer</span></li>
-                <li onclick="window.location.href='{{ url_for('update_customer') }}'"><i class="fa fa-pencil-square-o"></i><span class="fn">Update Customer</span></li>
+                <li id="load_home"><i class="fa fa-plus"></i><span class="fn">Create New Customer</span></li>
+                <li><i class="fa fa-pencil-square-o"></i><span class="fn">Update Customer</span></li>
                 <li><i class="fa fa-trash"></i><span class="fn">Delete Customer</span></li>
-                <li onclick="window.location.href='{{ url_for('view_cust') }}'"><i class="fa fa-list"></i><span class="fn">View Customers</span></li>
+                <li id="view_cust"><i class="fa fa-list"></i><span class="fn">View Customers</span></li>
               </ul>
             </div>
           </div>
@@ -121,19 +123,57 @@
             <label for="section-3"> <span>Search Customer</span></label>
             <div class="content">
               <ul>
-                <li onclick="window.location.href='{{ url_for('search_customer') }}'"><i class="fa fa-search"></i><span class="fn">Search and View</span></li>
+                <li><i class="fa fa-search"></i><span class="fn">Search and View</span></li>
               </ul>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-sm-9" style="left:-50%;">
+    <div class="col-sm-9" style="left:-60%;">
       <div id="content" style="margin-bottom:80px">
+        <div class="login-page" id=myModal>
+        <div class="form">
+        <h1>Customer Status</h1>
+        <table>
+        <thead>
+          <tr>
+            <th>Customer ID</th>
+            <th>Customer SSN ID</th>
+            <th>Status</th>
+            <th>Message</th>
+            <th>Last Updated</th>
+            <th>Operations</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        <col width="250">
+          <col width="250">
+            <col width="120">
+              <col width="300">
+                <col width="300">
+                  <col width="150">
+                  {% for item in data %}
+                  <tr>
+                      <td data-column="Customer ID">{{item[1]}}</td>
+                      <td data-column="Customer SSN ID">{{item[0]}}</td>
+                      <td data-column="Status">Active</td>
+                      <td data-column="Message">{{item[2]}}</td>
+                      <td data-column="Last Updated">{{item[3]}}</td>
+                      <td data-column="Operations"><a href="#">Refresh</a></td>
+                  </tr>
+                  {% endfor %}
+        </tbody>
+
+        </table>
+      </div>
+    </div>
       </div>
     </div>
   </div>
 </div>
+
   <script>
     $('.message a').click(function() {
       $('form').animate({
