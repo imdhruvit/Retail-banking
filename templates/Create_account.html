@@ -162,7 +162,7 @@
             <option>Current</option>
         </select>
       <p>Deposit Amount: <input required type="number" name="Amount" id="Amount" max="200000" /></p>
-      <button style="width:-webkit-fill-available" onclick="document.getElementById('create_account').submit();">Submit</button>
+      <button style="width:-webkit-fill-available" type="button" id="sub_form">Submit</button>
 
     </form>
   </div>
@@ -207,6 +207,12 @@
     $(document).ready(function() {
 $("#success-alert").fadeTo(5000, 500).slideUp(500, function() {
   $("#success-alert").slideUp(500);
+});
+});
+$(document).ready(function() {
+  $("#sub_form").on('click', function postinput(e) {
+    $("#create_account").submit();
+    e.preventDefault(e);
 });
 });
   </script>

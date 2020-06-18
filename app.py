@@ -109,19 +109,23 @@ def create_customer():
 def delete_customer():
     if request.method == "POST":
         id = request.form['id']
-        cid = request.form['cid']
         try:
             cur = mysql.connection.cursor()
-            sql = "DELETE from customer where id =%s;"
+            sql = "SELECT * from customer where id =%s;"
             cur.execute(sql, (id,))
-            cur.execute("DELETE from account where Cust_id =%s;",(id,))
-            mysql.connection.commit()
-            flash('Successfully deleted customer', "success")
-            return redirect(url_for('delete_customer'))
+            if cur.rowcount > 0:
+                sql = "DELETE from customer where id =%s;"
+                cur.execute(sql, (id,))
+                cur.execute("DELETE from account where Cust_id =%s;",(id,))
+                mysql.connection.commit()
+                flash('Successfully deleted customer', "success")
+                return redirect(url_for('delete_customer'))
+            else:
+                flash('No record found', "danger")
+                return redirect(url_for('delete_customer'))
         except Exception as e:
             flash(str(e.args[1]), "danger")
             return redirect(url_for('delete_customer'))
-
         finally:
             cur.close()
     elif request.method == "GET":
@@ -150,7 +154,10 @@ def search_customer():
 def search_account():
     if request.method == "GET":
         if 'username' in session:
-            return render_template('search_account.html')
+            if session['role'] == 'Cashier':
+                return render_template('search_account.html')
+            else:
+                return render_template('executive.html')
         else:
             return render_template('login.html')
 
@@ -159,17 +166,23 @@ def search_account():
 def update_customer():
     if request.method == "POST":
         id = request.form['id']
-        Name = request.form['ncn']
-        Age = request.form['nage']
-        Address = request.form['na']
         try:
             cur = mysql.connection.cursor()
-            val = (Name, Age, Address, id)
-            cur.execute(
-                "UPDATE customer SET Name=%s,Age=%s,Address=%s,Timestamp=CURRENT_TIMESTAMP(),Message='Customer updated' WHERE id=%s", val)
-            mysql.connection.commit()
-            flash('Successfully updated customer', "success")
-            return redirect(url_for('update_customer'))
+            sql = "SELECT * from customer where id =%s;"
+            cur.execute(sql, (id,))
+            if cur.rowcount > 0:
+                Name = request.form['ncn']
+                Age = request.form['nage']
+                Address = request.form['na']
+                val = (Name, Age, Address, id)
+                cur.execute(
+                    "UPDATE customer SET Name=%s,Age=%s,Address=%s,Timestamp=CURRENT_TIMESTAMP(),Message='Customer updated' WHERE id=%s", val)
+                mysql.connection.commit()
+                flash('Successfully updated customer', "success")
+                return redirect(url_for('update_customer'))
+            else:
+                flash('No record found', "danger")
+                return redirect(url_for('update_customer'))
         except Exception as e:
             flash(str(e.args[1]), "danger")
             return redirect(url_for('update_customer'))
@@ -217,6 +230,7 @@ def search_c():
 def search_a():
     id = request.form['ssn']
     sel = request.form['sel']
+    print(id)
     if str(sel) == '1':
         try:
             cur = mysql.connection.cursor()
@@ -282,32 +296,36 @@ def deposit_money():
         Type = request.form['Type']
         Amount = request.form['bal']
         DAmount = request.form['DAmount']
-        try:
-            cur = mysql.connection.cursor()
-            sql = "SELECT Amount from retail_bank.account where Account_id=%s"
-            cur.execute(sql, (Account_id,))
-            record = cur.fetchone()
+        if Cust_id != "" and Account_id != "" and Type != "" and Amount != "" and DAmount != "" :
+            try:
+                cur = mysql.connection.cursor()
+                sql = "SELECT Amount from retail_bank.account where Account_id=%s"
+                cur.execute(sql, (Account_id,))
+                record = cur.fetchone()
 
-            val = (record, DAmount, "account created", Account_id)
-            cur.execute(
-                "UPDATE retail_bank.account SET Amount=%s+%s , Message=%s,Timestamp = CURRENT_TIMESTAMP() WHERE Account_id=%s", val)
+                val = (record, DAmount, "account created", Account_id)
+                cur.execute(
+                    "UPDATE retail_bank.account SET Amount=%s+%s , Message=%s,Timestamp = CURRENT_TIMESTAMP() WHERE Account_id=%s", val)
 
-            sql = "SELECT CURRENT_DATE()"
-            cur.execute(sql)
-            re = cur.fetchone()
+                sql = "SELECT CURRENT_DATE()"
+                cur.execute(sql)
+                re = cur.fetchone()
 
-            val = (Account_id, re[0], "Deposit", DAmount)
-            sql = "INSERT INTO retail_bank.transactions (Account_id,trans_date,descript,amount) VALUES (%s,%s,%s,%s)"
-            cur.execute(sql, val)
+                val = (Account_id, re[0], "Deposit", DAmount)
+                sql = "INSERT INTO retail_bank.transactions (Account_id,trans_date,descript,amount) VALUES (%s,%s,%s,%s)"
+                cur.execute(sql, val)
 
-            mysql.connection.commit()
-            flash('Successfully deposited money', "success")
+                mysql.connection.commit()
+                flash('Successfully deposited money', "success")
+                return redirect(url_for('deposit_money'))
+            except Exception as e:
+                flash(str(e.args[1]), "danger")
+                return redirect(url_for('deposit_money'))
+            finally:
+                cur.close()
+        else:
+            flash("Enter all details", "danger")
             return redirect(url_for('deposit_money'))
-        except Exception as e:
-            flash(str(e.args[1]), "danger")
-            return redirect(url_for('deposit_money'))
-        finally:
-            cur.close()
     elif request.method == "GET":
         if 'username' in session:
             if session['role'] == 'Cashier':
@@ -326,33 +344,37 @@ def withdraw_money():
         Type = request.form['Type']
         Amount = request.form['bal']
         WAmount = request.form['WAmount']
-        try:
-            cur = mysql.connection.cursor()
-            sql = "SELECT Amount from retail_bank.account where Account_id=%s"
-            cur.execute(sql,(Account_id,))
-            rec = cur.fetchone()
+        if Cust_id != "" and Account_id != "" and Type != "" and Amount != "" and WAmount != "" :
+            try:
+                cur = mysql.connection.cursor()
+                sql = "SELECT Amount from retail_bank.account where Account_id=%s"
+                cur.execute(sql,(Account_id,))
+                rec = cur.fetchone()
 
-            if(rec[0] < int(WAmount)):
-                return("Withdraw not allowed,Please choose smaller amount.")
-            else:
-                val = ( rec , WAmount ,"account created",Account_id)
-                cur.execute("UPDATE retail_bank.account SET Amount=%s-%s , Message=%s,Timestamp = CURRENT_TIMESTAMP() WHERE Account_id=%s",val)
+                if(rec[0] < int(WAmount)):
+                    return("Withdraw not allowed,Please choose smaller amount.")
+                else:
+                    val = ( rec , WAmount ,"account created",Account_id)
+                    cur.execute("UPDATE retail_bank.account SET Amount=%s-%s , Message=%s,Timestamp = CURRENT_TIMESTAMP() WHERE Account_id=%s",val)
 
-                sql = "SELECT CURRENT_DATE()"
-                cur.execute(sql)
-                r = cur.fetchone()
+                    sql = "SELECT CURRENT_DATE()"
+                    cur.execute(sql)
+                    r = cur.fetchone()
 
-                val = ( Account_id , r[0] ,"Withdraw",WAmount)
-                sql = "INSERT INTO retail_bank.transactions (Account_id,trans_date,descript,amount) VALUES (%s,%s,%s,%s)"
-                cur.execute(sql,val)
-            mysql.connection.commit()
-            flash('Successfully withdrawn money', "success")
+                    val = ( Account_id , r[0] ,"Withdraw",WAmount)
+                    sql = "INSERT INTO retail_bank.transactions (Account_id,trans_date,descript,amount) VALUES (%s,%s,%s,%s)"
+                    cur.execute(sql,val)
+                mysql.connection.commit()
+                flash('Successfully withdrawn money', "success")
+                return redirect(url_for('withdraw_money'))
+            except Exception as e:
+                flash(str(e.args[1]), "danger")
+                return redirect(url_for('withdraw_money'))
+            finally:
+                cur.close()
+        else:
+            flash("Enter all details", "danger")
             return redirect(url_for('withdraw_money'))
-        except Exception as e:
-            flash(str(e.args[1]), "danger")
-            return redirect(url_for('withdraw_money'))
-        finally:
-            cur.close()
     elif request.method == "GET":
         if 'username' in session:
             if session['role'] == 'Cashier':
@@ -433,11 +455,17 @@ def delete_account():
         try:
             Account_id = request.form['Account_id']
             cur = mysql.connection.cursor()
-            sql = "DELETE from account where Account_id =%s;"
+            sql = "SELECT * from account where Account_id =%s;"
             cur.execute(sql, (Account_id,))
-            mysql.connection.commit()
-            flash('Successfully deleted account', "success")
-            return redirect(url_for('delete_account'))
+            if cur.rowcount > 0:
+                sql = "DELETE from account where Account_id =%s;"
+                cur.execute(sql, (Account_id,))
+                mysql.connection.commit()
+                flash('Successfully deleted account', "success")
+                return redirect(url_for('delete_account'))
+            else:
+                flash('No record found', "danger")
+                return redirect(url_for('delete_account'))
         except Exception as e:
             flash(str(e.args[1]), "danger")
             return redirect(url_for('delete_account'))
@@ -460,33 +488,36 @@ def statement():
         NT = request.form['nt']
         ST = request.form['sdate']
         ET = request.form['edate']
+        if id != "" and (NT != "" or (ST != "" and ET != "")):
+            if(NT):
+                try:
+                    cur = mysql.connection.cursor()
+                    val = (id, int(NT))
+                    cur.execute(
+                        "SELECT trans_id, trans_date, descript, amount FROM transactions WHERE Account_id=%s ORDER BY trans_date DESC LIMIT %s", val)
+                    data = cur.fetchall()
+                    mysql.connection.commit()
+                except Exception as e:
+                    return(str(e))
+                finally:
+                    cur.close()
+            elif(ST):
+                try:
+                    cur = mysql.connection.cursor()
+                    val = (id, ST, ET)
+                    cur.execute(
+                        "SELECT trans_id, trans_date, descript, amount FROM transactions WHERE Account_id=%s and trans_date BETWEEN %s AND %s ORDER BY trans_date DESC", val)
+                    data = cur.fetchall()
+                    mysql.connection.commit()
 
-        if(NT):
-            try:
-                cur = mysql.connection.cursor()
-                val = (id, int(NT))
-                cur.execute(
-                    "SELECT trans_id, trans_date, descript, amount FROM transactions WHERE Account_id=%s ORDER BY trans_date DESC LIMIT %s", val)
-                data = cur.fetchall()
-                mysql.connection.commit()
-            except Exception as e:
-                return(str(e))
-            finally:
-                cur.close()
-        elif(ST):
-            try:
-                cur = mysql.connection.cursor()
-                val = (id, ST, ET)
-                cur.execute(
-                    "SELECT trans_id, trans_date, descript, amount FROM transactions WHERE Account_id=%s and trans_date BETWEEN %s AND %s ORDER BY trans_date DESC", val)
-                data = cur.fetchall()
-                mysql.connection.commit()
-
-            except Exception as e:
-                return(str(e))
-            finally:
-                cur.close()
-        return render_template('statement_op.html', data=data)
+                except Exception as e:
+                    return(str(e))
+                finally:
+                    cur.close()
+            return render_template('statement_op.html', data=data)
+        else:
+            flash("Enter all details", "danger")
+            return redirect(url_for('statement'))
 
     elif request.method == "GET":
         if 'username' in session:
@@ -505,48 +536,52 @@ def transfer_money():
         SType = request.form['SType']
         TType = request.form['TType']
         TAmount = request.form['TAmount']
-        try:
-            cur = mysql.connection.cursor()
-            cur.execute("SELECT Amount,Account_id from retail_bank.account WHERE Cust_id = %s AND Type = %s",(Cust_id,SType))
-            Source = cur.fetchone()
-            Samount = Source[0]
-            acid = Source[1]
+        if Cust_id != "" and SType != "" and TType != "" and TAmount != "":
+            try:
+                cur = mysql.connection.cursor()
+                cur.execute("SELECT Amount,Account_id from retail_bank.account WHERE Cust_id = %s AND Type = %s",(Cust_id,SType))
+                Source = cur.fetchone()
+                Samount = Source[0]
+                acid = Source[1]
 
-            if(Source[0] < int(TAmount)):
-                return("Transfer not allowed,Please choose smaller amount.")
-            else:
-                cur.execute("UPDATE account SET Amount =%s-%s WHERE Account_id = %s AND Type = %s",(Samount,TAmount,acid,SType))
+                if(Source[0] < int(TAmount)):
+                    return("Transfer not allowed,Please choose smaller amount.")
+                else:
+                    cur.execute("UPDATE account SET Amount =%s-%s WHERE Account_id = %s AND Type = %s",(Samount,TAmount,acid,SType))
 
-                sql = "SELECT CURRENT_DATE()"
-                cur.execute(sql)
-                r6 = cur.fetchone()
+                    sql = "SELECT CURRENT_DATE()"
+                    cur.execute(sql)
+                    r6 = cur.fetchone()
 
-                w1 = ( acid , r6[0] ,"Withdraw",TAmount)
-                sql = "INSERT INTO retail_bank.transactions (Account_id,trans_date,descript,amount) VALUES (%s,%s,%s,%s)"
-                cur.execute(sql,w1)
+                    w1 = ( acid , r6[0] ,"Withdraw",TAmount)
+                    sql = "INSERT INTO retail_bank.transactions (Account_id,trans_date,descript,amount) VALUES (%s,%s,%s,%s)"
+                    cur.execute(sql,w1)
 
-                cur.execute("SELECT Amount,Account_id from retail_bank.account WHERE Cust_id = %s AND Type = %s",(Cust_id,TType))
-                Target = cur.fetchone()
-                Tamount = Target[0]
-                aid = Target[1]
-                cur.execute("UPDATE account SET Amount = %s+%s WHERE Account_id = %s AND Type = %s",(Tamount,TAmount,aid,TType))
+                    cur.execute("SELECT Amount,Account_id from retail_bank.account WHERE Cust_id = %s AND Type = %s",(Cust_id,TType))
+                    Target = cur.fetchone()
+                    Tamount = Target[0]
+                    aid = Target[1]
+                    cur.execute("UPDATE account SET Amount = %s+%s WHERE Account_id = %s AND Type = %s",(Tamount,TAmount,aid,TType))
 
-                sql = "SELECT CURRENT_DATE()"
-                cur.execute(sql)
-                r7 = cur.fetchone()
+                    sql = "SELECT CURRENT_DATE()"
+                    cur.execute(sql)
+                    r7 = cur.fetchone()
 
-                w2 = ( aid , r7[0] ,"Deposit",TAmount)
-                sql = "INSERT INTO retail_bank.transactions (Account_id,trans_date,descript,amount) VALUES (%s,%s,%s,%s)"
-                cur.execute(sql,w2)
+                    w2 = ( aid , r7[0] ,"Deposit",TAmount)
+                    sql = "INSERT INTO retail_bank.transactions (Account_id,trans_date,descript,amount) VALUES (%s,%s,%s,%s)"
+                    cur.execute(sql,w2)
 
-            mysql.connection.commit()
-            flash('Successfully transferred money', "success")
+                mysql.connection.commit()
+                flash('Successfully transferred money', "success")
+                return redirect(url_for('transfer_money'))
+            except Exception as e:
+                flash(str(e.args[1]), "danger")
+                return redirect(url_for('transfer_money'))
+            finally:
+                cur.close()
+        else:
+            flash("Enter all details", "danger")
             return redirect(url_for('transfer_money'))
-        except Exception as e:
-            flash(str(e.args[1]), "danger")
-            return redirect(url_for('transfer_money'))
-        finally:
-            cur.close()
 
     elif request.method == "GET":
         if 'username' in session:

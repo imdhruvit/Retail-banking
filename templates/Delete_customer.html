@@ -152,14 +152,14 @@
       </div>
       <h2 align="center" style="color:#000000 ;font-family: 'Roboto', sans-serif, bold">Delete Customer Screen</h2>
       <p>Customer SSN ID: <input required type="text" name="id" id="id" pattern="[0-9]{9}" /></p>
-      <p>Customer ID: <input required type="text" name="cid" id="cid" pattern="[0-9]{9}"/></p>
+      <p>Customer ID: <input required type="text" name="cid" id="cid" disabled pattern="[0-9]{9}"/></p>
       <p>Customer Name: <input required type="text" name="Name" id="Name" disabled maxlength="65"/></p>
       <p>Age: <input required type="text" name="Age" id="Age" min="18" disabled max="120"/></p>
       <p>Address: <input required type="text" name="Address" id="Address" disabled maxlength="128" /></p>
       <br>
       <div style="text-align: center">
-      <button onclick="document.getElementById('delete_customer').submit();">Delete</button>
-      <button>Cancel</button>
+      <button type="button" onclick="submitForm();return false;">Delete</button>
+      <button type="button" onclick="resetForm();return false;">Cancel</button>
       </div>
 
     </form>
@@ -217,6 +217,12 @@ $("#success-alert").fadeTo(5000, 500).slideUp(500, function() {
   $("#success-alert").slideUp(500);
 });
 });
+function resetForm() {
+  document.getElementById('delete_customer').reset();
+}
+function submitForm() {
+  document.getElementById('delete_customer').submit();
+}
   </script>
 
 </body>

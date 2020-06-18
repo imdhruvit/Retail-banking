@@ -157,7 +157,7 @@
               <p>New Address: <input required type="text" name="na" id="na" maxlength="128" /></p>
               <p>Old Age: <input required type="text" name="oage" id="oage" disabled/></p>
               <p>New Age: <input required type="text" name="nage" id="nage" min="18" max="120" /></p>
-              <button onclick="document.getElementById('update_customer').submit();">Update</button>
+              <button type="button" onclick="submitForm();return false;">Update</button>
 
             </form>
           </div>
@@ -168,6 +168,9 @@
 </div>
 
   <script>
+  function submitForm() {
+    document.getElementById('update_customer').submit();
+  }
     $(document).ready(function(){
     $("#id").on('focusout', function postinput(){
         var ssn = $(this).val(); // this.value

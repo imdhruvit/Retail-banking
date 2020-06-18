@@ -127,9 +127,9 @@
 
             <form class="login-form" id="search_account">
               <h2 align="center" style="color:#000000 ;font-family: " Roboto", sans-serif, bold">Search Account Details</h2>
-              <p>Enter Account ID: <input required type="text" name="aid" id="aid" /></p>
+              <p>Enter Account ID: <input required type="text" name="aid" id="aid" pattern="[0-9]{9}"/></p>
               OR <br>
-              <p>Enter Customer ID: <input required type="text" name="cid" id="cid" /></p>
+              <p>Enter Customer ID: <input required type="text" name="cid" id="cid" pattern="[0-9]{9}"/></p>
               <div style="text-align: center">
                 <button id="sub_form">Search</button>
               </div>
@@ -171,13 +171,6 @@
 </div>
 
   <script>
-  jQuery(function ($) {
-    var $inputs = $('input[name=aid],input[name=cid]');
-    $inputs.on('input', function () {
-        // Set the required property of the other input to false if this input is not empty.
-        $inputs.not(this).prop('required', !$(this).val().length);
-    });
-});
     $('.message a').click(function() {
       $('form').animate({
         height: "toggle",
@@ -187,6 +180,13 @@
   </script>
 
   <script>
+  jQuery(function($) {
+    var $inputs = $('input[name=id],input[name=cid]');
+    $inputs.on('input', function() {
+      // Set the required property of the other input to false if this input is not empty.
+      $inputs.not(this).prop('required', !$(this).val().length);
+    });
+  });
     // Modal Image Gallery
     function onClick(element) {
       document.getElementById("img01").src = element.src;
@@ -230,6 +230,10 @@
             type: 'POST',
             dataType: "json"
         }).done(function(responseData) {
+          if (!$.trim(responseData)) {
+            alert('No records found');
+            window.location.href = "http://localhost:5000/search_account";
+          } else {
             document.getElementById("custid").innerHTML = responseData[0];
             document.getElementById("accid").innerHTML = responseData[1];
             document.getElementById("atype").innerHTML = responseData[2];
@@ -237,6 +241,7 @@
             document.getElementById("astat").innerHTML = 'Active';
             document.getElementById("amsg").innerHTML = responseData[4];
             document.getElementById("alast").innerHTML = responseData[5];
+          }
         }).fail(function(jqXHR) {
                 alert("error: " + jqXHR.status);
                 console.log(jqXHR);
