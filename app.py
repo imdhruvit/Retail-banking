@@ -3,6 +3,7 @@ from flask_mysqldb import MySQL
 import os
 import json
 import math
+
 app = Flask(__name__, static_url_path='',
             static_folder='static', template_folder='templates')
 app.secret_key = 'sdsd15sd6fsf'
@@ -13,7 +14,6 @@ app.config['MYSQL_DB'] = 'retail_bank'
 
 mysql = MySQL(app)
 
-
 class CustomJsonEncoder(json.JSONEncoder):
 
     def default(self, obj):
@@ -21,14 +21,12 @@ class CustomJsonEncoder(json.JSONEncoder):
             return float(obj)
         return super(CustomJsonEncoder, self).default(obj)
 
-
+# Route to Home page
 @app.route('/')
 def index():
-    # initModel()
-        # render out pre-built HTML file right on the index page
     return render_template("login.html")
 
-
+# Route to Login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == "POST":
@@ -63,14 +61,14 @@ def login():
         else:
             return render_template('login.html')
 
-
+# Route to Logout page
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     session.pop('username', None)
     session.pop('role', None)
     return render_template('login.html')
 
-
+# Route to create customer page
 @app.route('/create_customer', methods=['GET', 'POST'])
 def create_customer():
     if request.method == "POST":
@@ -105,7 +103,7 @@ def create_customer():
         else:
             return render_template('login.html')
 
-
+# Route to delete customer page
 @app.route('/delete_customer', methods=['GET', 'POST'])
 def delete_customer():
     if request.method == "POST":
@@ -130,7 +128,7 @@ def delete_customer():
         else:
             return render_template('login.html')
 
-
+# Route to Search customer page
 @app.route('/search_customer', methods=['GET', 'POST'])
 def search_customer():
     if request.method == "GET":
@@ -142,7 +140,7 @@ def search_customer():
         else:
             return render_template('login.html')
 
-
+# Route to Search account page
 @app.route('/search_account', methods=['GET', 'POST'])
 def search_account():
     if request.method == "GET":
@@ -151,7 +149,7 @@ def search_account():
         else:
             return render_template('login.html')
 
-
+# Route to Update customer page
 @app.route('/update_customer', methods=['GET', 'POST'])
 def update_customer():
     if request.method == "POST":
@@ -179,7 +177,7 @@ def update_customer():
         else:
             return render_template('login.html')
 
-
+# Search customer
 @app.route('/search_c', methods=['POST'])
 def search_c():
     id = request.form['ssn']
@@ -207,7 +205,7 @@ def search_c():
         finally:
             cur.close()
 
-
+# Search account
 @app.route('/search_a', methods=['POST'])
 def search_a():
     id = request.form['ssn']
@@ -235,7 +233,7 @@ def search_a():
         finally:
             cur.close()
 
-
+# Route to Create account page
 @app.route('/create_account', methods=['GET', 'POST'])
 def create_account():
     if request.method == "POST":
@@ -266,7 +264,7 @@ def create_account():
         else:
             return render_template('login.html')
 
-
+# Route to Deposite money page
 @app.route('/deposit_money', methods=['GET', 'POST'])
 def deposit_money():
     if request.method == "POST":
@@ -308,7 +306,7 @@ def deposit_money():
         else:
             return render_template('login.html')
 
-
+# Route to withdraw page
 @app.route('/withdraw_money', methods=['GET', 'POST'])
 def withdraw_money():
     if request.method == "POST":
@@ -350,7 +348,7 @@ def withdraw_money():
         else:
             return render_template('login.html')
 
-
+# Get old data
 @app.route('/get_old_data', methods=['POST'])
 def get_old_data():
     id = request.form['ssn']
@@ -365,7 +363,7 @@ def get_old_data():
     finally:
         cur.close()
 
-
+# Route to View customer page
 @app.route('/view_cust', methods=['GET'])
 def view_cust():
     if request.method == "GET":
@@ -390,7 +388,7 @@ def view_cust():
         else:
             return render_template('login.html')
 
-
+# Route to View account page
 @app.route('/view_acc', methods=['GET', 'POST'])
 def view_acc():
     if request.method == "GET":
@@ -414,7 +412,7 @@ def view_acc():
         else:
             return render_template('login.html')
 
-
+# Route to Delete account page
 @app.route('/delete_account', methods=['GET', 'POST'])
 def delete_account():
     if request.method == "POST":
@@ -438,7 +436,7 @@ def delete_account():
         else:
             return render_template('login.html')
 
-
+# Route to Statement page
 @app.route('/statement', methods=['GET', 'POST'])
 def statement():
     if request.method == "POST":
@@ -453,10 +451,8 @@ def statement():
                 val = (id, int(NT))
                 cur.execute(
                     "SELECT trans_id, trans_date, descript, amount FROM transactions WHERE Account_id=%s ORDER BY trans_date DESC LIMIT %s", val)
-
                 data = cur.fetchall()
                 mysql.connection.commit()
-
             except Exception as e:
                 return(str(e))
             finally:
@@ -467,7 +463,6 @@ def statement():
                 val = (id, ST, ET)
                 cur.execute(
                     "SELECT trans_id, trans_date, descript, amount FROM transactions WHERE Account_id=%s and trans_date BETWEEN %s AND %s ORDER BY trans_date DESC", val)
-
                 data = cur.fetchall()
                 mysql.connection.commit()
 
@@ -486,11 +481,10 @@ def statement():
         else:
             return render_template('login.html')
 
-
+# Route to Transfer money page
 @app.route('/transfer_money', methods=['GET', 'POST'])
 def transfer_money():
     if request.method == "POST":
-
         Cust_id = request.form['cid']
         SType = request.form['SType']
         TType = request.form['TType']
@@ -531,6 +525,7 @@ def transfer_money():
             return(str(e))
         finally:
             cur.close()
+
     elif request.method == "GET":
         if 'username' in session:
             if session['role'] == 'Cashier':
@@ -540,6 +535,6 @@ def transfer_money():
         else:
             return render_template('login.html')
 
-
+# Main Function 
 if __name__ == '__main__':
     app.run()

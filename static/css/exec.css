@@ -1,18 +1,23 @@
 @import url(https://fonts.googleapis.com/css?family=Quicksand:300,400,700);
 @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css);
+
 .accordion {
   color: #FFF;
   width: 100%;
 }
+
 .accordion .section {
   width: 100%;
 }
+
 .accordion .section input[type='radio'] {
   display: none;
 }
+
 .accordion .section input[type='radio']:checked + label {
   background: #363636;
 }
+
 .accordion .section input[type='radio']:checked + label:before {
   content: " ";
   position: absolute;
@@ -20,12 +25,14 @@
   height: 100%;
   left: 0;
 }
+
 .accordion .section input[type='radio']:checked ~ .content {
   max-height: 300px;
   opacity: 1;
   z-index: 10;
   overflow-y: auto;
 }
+
 .accordion .section label {
   position: relative;
   cursor: pointer;
@@ -43,6 +50,7 @@
   -o-user-select: none;
   user-select: none;
 }
+
 .accordion .section label:before {
   content: " ";
   width: 100%;
@@ -52,16 +60,20 @@
   height: 1px;
   border-top: 1px solid #363636;
 }
+
 .accordion .section label:hover {
   background: #363636;
 }
+
 .accordion .section label span {
   display: table-cell;
   vertical-align: middle;
 }
+
 .accordion .section:last-of-type {
   border-bottom: 1px solid #363636;
 }
+
 .accordion .section .content {
   max-height: 0;
   -webkit-transition: all 0.4s;
@@ -96,12 +108,15 @@ body {
 .accordion {
   font-size: 14px;
 }
+
 .accordion .section .content {
   padding: 0 15px;
 }
+
 .accordion .section input[type='radio'] {
   display: none;
 }
+
 .accordion .section input[type='radio']:checked ~ .content {
   padding: 15px;
 }
@@ -112,17 +127,21 @@ ul {
   margin: 0;
   list-style: none;
 }
+
 ul li {
   padding: 5px;
 }
+
 ul li i {
   font-size: 13px;
   width: 15px;
   margin-right: 15px;
 }
+
 ul li:hover {
   cursor: pointer;
 }
+
 ul li:hover i {
   color: #21CCFC;
 }
@@ -134,10 +153,12 @@ ul li:hover i {
   color: #FFF;
   font-size: 20px;
 }
+
 .logo i {
   font-size: 70px;
   color: #21CCFC;
 }
+
 .fn{
   font-size: 12px;
 }

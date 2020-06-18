@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
-<title>Retail banking</title>
+<title>Create Account | Retail banking</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
@@ -18,7 +21,6 @@
 
 <link rel="stylesheet" href="css/exec.css">
 <link rel="stylesheet" href="css/create_customer.css">
-
 
 <style>
   body,
@@ -87,8 +89,10 @@
         <a href="#team" onclick="w3_close()" class="w3-bar-item w3-button">TEAM</a>
   </nav>
 
+<!-- Cashier Functions -->
 <div class="container">
   <div class="row">
+
     <div class="col-sm-3">
       <div class="left-menu">
         <div class="logo">
@@ -130,6 +134,8 @@
         </div>
       </div>
     </div>
+
+    <!-- Create Account Form -->
     <div class="col-sm-9" style="left:-60%;">
       <div id="content" style="margin-bottom:80px">
   <div class="login-page" id=myModal>
@@ -154,6 +160,7 @@
 </div>
 </div>
 </div>
+
   <script>
     $('.message a').click(function() {
       $('form').animate({
@@ -172,10 +179,8 @@
       captionText.innerHTML = element.alt;
     }
 
-
     // Toggle between showing and hiding the sidebar when clicking the menu icon
     var mySidebar = document.getElementById("mySidebar");
-
     function w3_open() {
       if (mySidebar.style.display === 'block') {
         mySidebar.style.display = 'none';

@@ -153,7 +153,6 @@
 
 body {
   background: #2196f3;
-  /* fallback for old browsers */
   background: -webkit-linear-gradient(right, #2196f3, #2196f3);
   background: -moz-linear-gradient(right, #2196f3, #2196f3);
   background: -o-linear-gradient(right, #2196f3, #2196f3);
@@ -200,7 +199,6 @@ section {
   width: 40%;
 }
 
-/* The company logo */
 .footer-distributed h3 {
   color: #ffffff;
   font: normal 36px 'Open Sans', cursive;
@@ -331,7 +329,6 @@ section {
   margin-bottom: 5px;
 }
 
-/* If you don't want the footer to be responsive, remove these media queries */
 @media (max-width: 880px) {
   .footer-distributed {
     font: bold 14px sans-serif;
