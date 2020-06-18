@@ -88,10 +88,11 @@ def create_customer():
             cur.execute("INSERT INTO customer(id,Name,Age,Address,State,City,Cust_id,Message,Timestamp) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,CURRENT_TIMESTAMP())",
                         (id, Name, Age, Address, State, City,cid,'Customer created'))
             mysql.connection.commit()
-            flash('Successfully created customer')
+            flash('Successfully created customer', "success")
             return redirect(url_for('create_customer'))
         except Exception as e:
-            return(str(e))
+            flash(str(e.args[1]), "danger")
+            return redirect(url_for('create_customer'))
         finally:
             cur.close()
     elif request.method == "GET":
@@ -115,9 +116,11 @@ def delete_customer():
             cur.execute(sql, (id,))
             cur.execute("DELETE from account where Cust_id =%s;",(id,))
             mysql.connection.commit()
-            return("done")
+            flash('Successfully deleted customer', "success")
+            return redirect(url_for('delete_customer'))
         except Exception as e:
-            return(str(e))
+            flash(str(e.args[1]), "danger")
+            return redirect(url_for('delete_customer'))
 
         finally:
             cur.close()
@@ -165,9 +168,11 @@ def update_customer():
             cur.execute(
                 "UPDATE customer SET Name=%s,Age=%s,Address=%s,Timestamp=CURRENT_TIMESTAMP(),Message='Customer updated' WHERE id=%s", val)
             mysql.connection.commit()
-            return("done")
+            flash('Successfully updated customer', "success")
+            return redirect(url_for('update_customer'))
         except Exception as e:
-            return(str(e))
+            flash(str(e.args[1]), "danger")
+            return redirect(url_for('update_customer'))
         finally:
             cur.close()
     elif request.method == "GET":
@@ -252,9 +257,11 @@ def create_account():
             cur.execute("INSERT INTO account(Type,Cust_id,Account_id,Amount,Message,Timestamp) VALUES (%s,%s,%s,%s,%s,CURRENT_TIMESTAMP())",
                         (Type, Cust_id, accId, Amount, "Account Created"))
             mysql.connection.commit()
-            return("Success")
+            flash('Successfully created account', "success")
+            return redirect(url_for('create_account'))
         except Exception as e:
-            return(str(e))
+            flash(str(e.args[1]), "danger")
+            return redirect(url_for('create_account'))
         finally:
             cur.close()
     elif request.method == "GET":
@@ -294,9 +301,11 @@ def deposit_money():
             cur.execute(sql, val)
 
             mysql.connection.commit()
-            return("done")
+            flash('Successfully deposited money', "success")
+            return redirect(url_for('deposit_money'))
         except Exception as e:
-            return(str(e))
+            flash(str(e.args[1]), "danger")
+            return redirect(url_for('deposit_money'))
         finally:
             cur.close()
     elif request.method == "GET":
@@ -337,9 +346,11 @@ def withdraw_money():
                 sql = "INSERT INTO retail_bank.transactions (Account_id,trans_date,descript,amount) VALUES (%s,%s,%s,%s)"
                 cur.execute(sql,val)
             mysql.connection.commit()
-            return("done")
+            flash('Successfully withdrawn money', "success")
+            return redirect(url_for('withdraw_money'))
         except Exception as e:
-            return(str(e))
+            flash(str(e.args[1]), "danger")
+            return redirect(url_for('withdraw_money'))
         finally:
             cur.close()
     elif request.method == "GET":
@@ -425,9 +436,11 @@ def delete_account():
             sql = "DELETE from account where Account_id =%s;"
             cur.execute(sql, (Account_id,))
             mysql.connection.commit()
-            return("done")
+            flash('Successfully deleted account', "success")
+            return redirect(url_for('delete_account'))
         except Exception as e:
-            return(str(e))
+            flash(str(e.args[1]), "danger")
+            return redirect(url_for('delete_account'))
         finally:
             cur.close()
     elif request.method == "GET":
@@ -527,9 +540,11 @@ def transfer_money():
                 cur.execute(sql,w2)
 
             mysql.connection.commit()
-            return("Success")
+            flash('Successfully transferred money', "success")
+            return redirect(url_for('transfer_money'))
         except Exception as e:
-            return(str(e))
+            flash(str(e.args[1]), "danger")
+            return redirect(url_for('transfer_money'))
         finally:
             cur.close()
 

@@ -138,6 +138,17 @@
           <div class="form">
 
             <form class="login-form" id="update_customer" method="post" action="http://localhost:5000/update_customer">
+              <div class="container1">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}"id="success-alert">
+                       <span>{{ message }}</span>
+                   </div>
+               {% endfor %}
+           {% endif %}
+       {% endwith %}
+              </div>
               <h2 align="center" style="color:#000000 ;font-family: 'Roboto, sans-serif, bold'">Update Customer Screen</h2>
               <p>Customer SSN ID: <input type="text" name="id" id="id" pattern="[0-9]{9}" /></p>
               <p>Old Customer Name: <input type="text" name="ocn" id="ocn" disabled/></p>
@@ -206,6 +217,11 @@
     function w3_close() {
       mySidebar.style.display = "none";
     }
+    $(document).ready(function() {
+$("#success-alert").fadeTo(5000, 500).slideUp(500, function() {
+  $("#success-alert").slideUp(500);
+});
+});
   </script>
 
 </body>

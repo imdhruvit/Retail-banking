@@ -127,6 +127,17 @@
           <div class="form">
 
             <form class="login-form" id="withdraw_amount" method="post" action="http://localhost:5000/withdraw_money">
+              <div class="container1">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}"id="success-alert">
+                       <span>{{ message }}</span>
+                   </div>
+               {% endfor %}
+           {% endif %}
+       {% endwith %}
+              </div>
               <h2 align="center" style="color:#000000 ;font-family: 'Roboto, sans-serif, bold'">Withdraw Amount</h2>
               <p>Customer ID: <input type="text" name="cid" id="cid" required pattern="[0-9]{9}" /></p>
               <p>Account ID: <input type="text" name="Account_id" id="Account_id" required pattern="[0-9]{9}" /></p>
@@ -179,6 +190,11 @@
     function w3_close() {
       mySidebar.style.display = "none";
     }
+    $(document).ready(function() {
+$("#success-alert").fadeTo(5000, 500).slideUp(500, function() {
+  $("#success-alert").slideUp(500);
+});
+});
   </script>
 
 </body>
