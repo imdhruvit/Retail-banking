@@ -58,7 +58,7 @@
       <a href="#home" class="w3-bar-item w3-button w3-wide">LOGO</a>
       <!-- Right-sided navbar links -->
       <div class="w3-right w3-hide-small">
-        <a href="#login" class="w3-bar-item w3-button"> LOGIN</a>
+        <a href="http://localhost:5000/logout" class="w3-bar-item w3-button"> LOGOUT</a>
         <a href="#about" class="w3-bar-item w3-button">ABOUT</a>
         <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> TEAM</a>
 
@@ -78,7 +78,7 @@
     <div class="container" style="position:relative;">
       <div class="w3l_sign_in_register category">
         <ul>
-          <li><a href="#login" data-toggle="modal" data-target="#myModal">LOGIN</a></li>
+          <li><a href="http://localhost:5000/logout" data-toggle="modal" data-target="#myModal">LOGOUT</a></li>
         </ul>
       </div>
       <div>
@@ -92,7 +92,7 @@
     <div class="col-sm-3">
       <div class="left-menu">
         <div class="logo">
-          <div>Executive Functions</div>
+          <div>Cashier Functions</div>
         </div>
         <div class="accordion">
           <div class="section">
@@ -102,8 +102,8 @@
               <ul>
                 <li onclick="window.location.href='{{ url_for('create_customer') }}'"><i class="fa fa-plus"></i><span class="fn">Create New Customer</span></li>
                 <li onclick="window.location.href='{{ url_for('update_customer') }}'"><i class="fa fa-pencil-square-o"></i><span class="fn">Update Customer</span></li>
-                <li><i class="fa fa-trash"></i><span class="fn">Delete Customer</span></li>
-                <li><i class="fa fa-list"></i><span class="fn">View Customers</span></li>
+                <li onclick="window.location.href='{{ url_for('delete_customer') }}'"><i class="fa fa-trash"></i><span class="fn">Delete Customer</span></li>
+                <li onclick="window.location.href='{{ url_for('view_cust') }}'"><i class="fa fa-list"></i><span class="fn">View Customers</span></li>
               </ul>
             </div>
           </div>
@@ -112,9 +112,9 @@
             <label for="section-2"> <span>Manage Account Details</span></label>
             <div class="content">
               <ul>
-                <li><i class="fa fa-plus"></i><span class="fn">Create New Account</span></li>
-                <li><i class="fa fa-trash"></i><span class="fn">Delete Account</span></li>
-                <li><i class="fa fa-list"></i><span class="fn">View Accounts</span></li>
+                <li onclick="window.location.href='{{ url_for('create_account') }}'"><i class="fa fa-plus"></i><span class="fn">Create New Account</span></li>
+                <li onclick="window.location.href='{{ url_for('delete_account') }}'"><i class="fa fa-trash"></i><span class="fn">Delete Account</span></li>
+                <li onclick="window.location.href='{{ url_for('view_acc') }}'"><i class="fa fa-list"></i><span class="fn">View Accounts</span></li>
               </ul>
             </div>
           </div>
@@ -123,7 +123,7 @@
             <label for="section-3"> <span>Search Customer</span></label>
             <div class="content">
               <ul>
-                <li id="load_search"><i class="fa fa-search"></i><span class="fn">Search and View</span></li>
+                <li onclick="window.location.href='{{ url_for('search_customer') }}'"><i class="fa fa-search"></i><span class="fn">Search and View</span></li>
               </ul>
             </div>
           </div>
@@ -145,7 +145,7 @@
             <option>Current</option>
         </select>
       <p>Deposit Amount: <input type="number" placeholder="30000" name="Amount" id="Amount" max="200000" /></p>
-      <button onclick="document.getElementById('create_account').submit();">Submit</button>
+      <button style="width:-webkit-fill-available" onclick="document.getElementById('create_account').submit();">Submit</button>
 
     </form>
   </div>

@@ -51,14 +51,22 @@
 </style>
 
 <body>
-
+  {% with messages = get_flashed_messages() %}
+           {% if messages %}
+              <ul id="header">
+                 {% for message in messages %}
+                 <li>{{ message }}</li>
+                 {% endfor %}
+              </ul>
+           {% endif %}
+        {% endwith %}
   <!-- Navbar (sit on top) -->
   <div class="w3-top" style="z-index:100">
     <div class="w3-bar w3-white w3-card" id="myNavbar">
       <a href="#home" class="w3-bar-item w3-button w3-wide">LOGO</a>
       <!-- Right-sided navbar links -->
       <div class="w3-right w3-hide-small">
-        <a href="#login" class="w3-bar-item w3-button"> LOGIN</a>
+        <a href="http://localhost:5000/logout" class="w3-bar-item w3-button"> LOGOUT</a>
         <a href="#about" class="w3-bar-item w3-button">ABOUT</a>
         <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> TEAM</a>
 
@@ -78,7 +86,7 @@
     <div class="container" style="position:relative;">
       <div class="w3l_sign_in_register category">
         <ul>
-          <li><a href="#login" data-toggle="modal" data-target="#myModal">LOGIN</a></li>
+          <li><a href="http://localhost:5000/logout" data-toggle="modal" data-target="#myModal">LOGOUT</a></li>
         </ul>
       </div>
       <div>
@@ -102,8 +110,8 @@
               <ul>
                 <li onclick="window.location.href='{{ url_for('create_customer') }}'"><i class="fa fa-plus"></i><span class="fn">Create New Customer</span></li>
                 <li onclick="window.location.href='{{ url_for('update_customer') }}'"><i class="fa fa-pencil-square-o"></i><span class="fn">Update Customer</span></li>
-                <li><i class="fa fa-trash"></i><span class="fn">Delete Customer</span></li>
-                <li><i class="fa fa-list"></i><span class="fn">View Customers</span></li>
+                <li onclick="window.location.href='{{ url_for('delete_customer') }}'"><i class="fa fa-trash"></i><span class="fn">Delete Customer</span></li>
+                <li onclick="window.location.href='{{ url_for('view_cust') }}'"><i class="fa fa-list"></i><span class="fn">View Customers</span></li>
               </ul>
             </div>
           </div>
@@ -112,9 +120,9 @@
             <label for="section-2"> <span>Manage Account Details</span></label>
             <div class="content">
               <ul>
-                <li><i class="fa fa-plus"></i><span class="fn">Create New Account</span></li>
-                <li><i class="fa fa-trash"></i><span class="fn">Delete Account</span></li>
-                <li><i class="fa fa-list"></i><span class="fn">View Accounts</span></li>
+                <li onclick="window.location.href='{{ url_for('create_account') }}'"><i class="fa fa-plus"></i><span class="fn">Create New Account</span></li>
+                <li onclick="window.location.href='{{ url_for('delete_account') }}'"><i class="fa fa-trash"></i><span class="fn">Delete Account</span></li>
+                <li onclick="window.location.href='{{ url_for('view_acc') }}'"><i class="fa fa-list"></i><span class="fn">View Accounts</span></li>
               </ul>
             </div>
           </div>
@@ -123,7 +131,7 @@
             <label for="section-3"> <span>Search Customer</span></label>
             <div class="content">
               <ul>
-                <li id="load_search"><i class="fa fa-search"></i><span class="fn">Search and View</span></li>
+                <li onclick="window.location.href='{{ url_for('search_customer') }}'"><i class="fa fa-search"></i><span class="fn">Search and View</span></li>
               </ul>
             </div>
           </div>
@@ -340,11 +348,6 @@
         opacity: "toggle"
       }, "slow");
     });
-    $(document).ready( function() {
-    $("#load_search").on("click", function() {
-        $("#content").load("/customer_search");
-    });
-});
   </script>
 
   <script>
@@ -372,6 +375,12 @@
     function w3_close() {
       mySidebar.style.display = "none";
     }
+    var heading = $("#header");
+    setInterval(function() {
+      if (heading.style.display == "block") { heading.style.display = "none"; }
+      else if (heading.style.display == "none") { heading.style.display = "block"; }
+    }, 1000);
+
   </script>
 
 </body>

@@ -17,6 +17,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <link rel="stylesheet" href="css/exec.css">
+<link rel="stylesheet" href="css/search_customer.css">
 
 <style>
   body,
@@ -117,13 +118,63 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-9" style="left:-50%;">
+    <div class="col-sm-9" style="left:-73%;">
       <div id="content" style="margin-bottom:80px">
+        <div class="login-page" id="myModal">
+          <div class="form">
+
+            <form class="login-form" id="search_account">
+              <h2 align="center" style="color:#000000 ;font-family: " Roboto", sans-serif, bold">Search Account Details</h2>
+              <p>Enter Account ID: <input type="text" name="aid" id="aid" /></p>
+              OR <br>
+              <p>Enter Customer ID: <input type="text" name="cid" id="cid" /></p>
+              <div style="text-align: center">
+                <button id="sub_form">Search</button>
+              </div>
+            </form>
+          <div id="result">
+            <br>
+            <table id="search_result">
+            <thead>
+              <tr>
+                <th width="15%">Customer ID</th>
+                <th width="15%">Account ID</th>
+                <th width="10%">Account Type</th>
+                <th width="10%">Account Status</th>
+                <th width="15%">Amount</th>
+                <th width="15%">Message</th>
+                <th width="20%">Last Updated</th>
+              </tr>
+            </thead>
+
+            <tbody>
+                      <tr>
+                          <td id="custid"></td>
+                          <td id="accid"></td>
+                          <td id="atype"></td>
+                          <td id="astat"></td>
+                          <td id="aamo"></td>
+                          <td id="amsg"></td>
+                          <td id="alast"></td>
+                      </tr>
+            </tbody>
+
+            </table>
+          </div>
       </div>
     </div>
   </div>
 </div>
+</div>
+</div>
   <script>
+  jQuery(function ($) {
+    var $inputs = $('input[name=aid],input[name=cid]');
+    $inputs.on('input', function () {
+        // Set the required property of the other input to false if this input is not empty.
+        $inputs.not(this).prop('required', !$(this).val().length);
+    });
+});
     $('.message a').click(function() {
       $('form').animate({
         height: "toggle",
@@ -157,6 +208,40 @@
     function w3_close() {
       mySidebar.style.display = "none";
     }
+
+    $(document).ready(function(){
+    $("#sub_form").on('click', function postinput(e){
+        var aid = $('input[name=aid]').val(); // this.value
+        var cid = $('input[name=cid]').val();
+        var ssn;
+        var sel;
+        if(aid){
+          ssn = aid;
+          sel = 1;
+        } else{
+          ssn = cid;
+          sel = 2;
+        }
+        $.ajax({
+            url: "{{url_for('search_a')}}",
+            data: { ssn: ssn , sel: sel},
+            type: 'POST',
+            dataType: "json"
+        }).done(function(responseData) {
+            document.getElementById("custid").innerHTML = responseData[0];
+            document.getElementById("accid").innerHTML = responseData[1];
+            document.getElementById("atype").innerHTML = responseData[2];
+            document.getElementById("aamo").innerHTML = responseData[3];
+            document.getElementById("astat").innerHTML = 'Active';
+            document.getElementById("amsg").innerHTML = responseData[4];
+            document.getElementById("alast").innerHTML = responseData[5];
+        }).fail(function(jqXHR) {
+                alert("error: " + jqXHR.status);
+                console.log(jqXHR);
+        });
+        e.preventDefault(e);
+    });
+});
   </script>
 
 </body>

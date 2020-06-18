@@ -17,6 +17,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <link rel="stylesheet" href="css/exec.css">
+<link rel="stylesheet" href="css/create_customer.css">
 
 <style>
   body,
@@ -90,7 +91,7 @@
     <div class="col-sm-3">
       <div class="left-menu">
         <div class="logo">
-          <div>Cashier Functions</div>
+          <div>Executive Functions</div>
         </div>
         <div class="accordion">
           <div class="section">
@@ -119,10 +120,35 @@
     </div>
     <div class="col-sm-9" style="left:-50%;">
       <div id="content" style="margin-bottom:80px">
+        <div class="login-page" id=myModal>
+          <div class="form">
+
+            <form class="login-form" id="transfer_money" method="post" action="http://localhost:5000/transfer_money">
+              <h2 align="center" style="color:#000000 ;font-family: 'Roboto, sans-serif, bold'">Transfer Money</h2>
+              <p>Customer ID: <input type="text" placeholder="42069" name="cid" id="cid" required pattern="[0-9]{10}" /></p>
+              <p>Source Account Type: </p>
+                <select required id="SType" name="SType">
+                    <option></option>
+                    <option>Savings</option>
+                    <option>Current</option>
+                </select>
+              <p>Target Account Type: </p>
+                <select required id="TType" name="TType">
+                    <option></option>
+                    <option>Savings</option>
+                    <option>Current</option>
+                </select>
+              <p>Transfer Amount: <input type="number" placeholder="98000" name="TAmount" id="TAmount" required /></p>
+              <button style="width:-webkit-fill-available" onclick="document.getElementById('transfer_money').submit();">Transfer</button>
+
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
   <script>
     $('.message a').click(function() {
       $('form').animate({

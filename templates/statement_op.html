@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<title>Statement Details | Retail banking</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<!-- Script for physical copy of statement -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.1/jspdf.debug.js"></script>
+
+<link rel="stylesheet" href="css/view_cust.css">
+
+<style>
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Raleway", sans-serif
+  }
+
+  body,
+  html {
+    height: 100%;
+    line-height: 1.8;
+  }
+
+  /* Full height image header */
+  .bgimg-1 {
+    background-position: center;
+    background-size: cover;
+    background-image: url("https://techcrunch.com/wp-content/uploads/2015/11/shutterstock_302406614.png?w=1390&crop=1");
+    min-height: 100%;
+  }
+
+  .w3-bar .w3-button {
+    padding: 16px;
+  }
+</style>
+
+<body>
+
+  <!-- Navbar (sit on top) -->
+  <div class="w3-top" style="z-index:100">
+    <div class="w3-bar w3-white w3-card" id="myNavbar">
+      <a href="#home" class="w3-bar-item w3-button w3-wide">LOGO</a>
+      <!-- Right-sided navbar links -->
+      <div class="w3-right w3-hide-small">
+        <a href="http://localhost:5000/logout" class="w3-bar-item w3-button"> LOGOUT</a>
+        <a href="#about" class="w3-bar-item w3-button">ABOUT</a>
+        <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> TEAM</a>
+
+      </div>
+      <!-- Hide right-floated links on small screens and replace them with a menu icon -->
+
+      <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Sidebar on small screens when clicking the menu icon -->
+  <nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none" id="mySidebar">
+    <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
+
+    <div class="container" style="position:relative;">
+      <div class="w3l_sign_in_register category">
+        <ul>
+          <li><a href="http://localhost:5000/logout" data-toggle="modal" data-target="#myModal">LOGOUT</a></li>
+        </ul>
+      </div>
+      <div>
+
+        <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a>
+        <a href="#team" onclick="w3_close()" class="w3-bar-item w3-button">TEAM</a>
+  </nav>
+
+  <div class="container">
+    <div class="row">
+
+      <div class="col-sm-3">
+        <div class="left-menu">
+          <div class="logo">
+            <div>Executive Functions</div>
+          </div>
+          <div class="accordion">
+            <div class="section">
+              <input type="radio" name="accordion-1" id="section-1" checked="checked" />
+              <label for="section-1"><span>Operate Banking Transactions</span></label>
+              <div class="content">
+                <ul>
+                  <li onclick="window.location.href='{{ url_for('deposit_money') }}'"><i class="fa fa-plus"></i><span class="fn">Deposit Money</span></li>
+                  <li onclick="window.location.href='{{ url_for('withdraw_money') }}'"><i class="fa fa-minus"></i><span class="fn">Withdraw Money</span></li>
+                  <li onclick="window.location.href='{{ url_for('transfer_money') }}'"><i class="fa fa-exchange"></i><span class="fn">Transfer Money</span></li>
+                  <li onclick="window.location.href='{{ url_for('statement') }}'"><i class="fa fa-print"></i><span class="fn">Print Statement</span></li>
+                </ul>
+              </div>
+            </div>
+            <div class="section">
+              <input type="radio" name="accordion-1" id="section-2" value="toggle" />
+              <label for="section-2"> <span>Search Customer</span></label>
+              <div class="content">
+                <ul>
+                  <li onclick="window.location.href='{{ url_for('search_account') }}'"><i class="fa fa-search"></i><span class="fn">Search and View</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-9" style="left:-50%;">
+        <div id="content" style="margin-bottom:80px">
+        </div>
+      </div>
+
+      <div class="col-sm-9" style="left:-60%;">
+        <div id="content" style="margin-bottom:80px">
+          <div class="login-page" id=myModal>
+            <div class="form">
+              <h1>Account Statement</h1>
+              <div id="res">
+                <table id="myTable">
+                  <thead>
+                    <tr>
+                      <th>Transaction ID</th>
+                      <th>Description</th>
+                      <th>Date(YYYY-MM-DD)</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <col width="250">
+                    <col width="250">
+                    <col width="120">
+                    <col width="300">
+                    {% for item in data %}
+                    <tr>
+                      <td data-column="Transaction ID">{{item[0]}}</td>
+                      <td data-column="Description">{{item[2]}}</td>
+                      <td data-column="Date">{{item[1]}}</td>
+                      <td data-column="Amount">{{item[3]}}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+
+                </table>
+              </div>
+              <button onclick="javascript:demoFromHTML()">Download as PDF file</button> <button onclick="tableToExcel('res', 'W3C Example Table')">Download as Excel File</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <!-- Script for physical copy of statement in PDF format -->
+  <script type="text/javascript">
+    function demoFromHTML() {
+      var pdf = new jsPDF('p', 'pt', 'letter');
+      // source can be HTML-formatted string, or a reference
+      // to an actual DOM element from which the text will be scraped.
+      source = $('#res')[0];
+
+      // we support special element handlers. Register them with jQuery-style
+      // ID selector for either ID or node name. ("#iAmID", "div", "span" etc.)
+      // There is no support for any other type of selectors
+      // (class, of compound) at this time.
+      specialElementHandlers = {
+        // element with id of "bypass" - jQuery style selector
+        '#bypassme': function(element, renderer) {
+          // true = "handled elsewhere, bypass text extraction"
+          return true
+        }
+      };
+      margins = {
+        top: 80,
+        bottom: 60,
+        left: 40,
+        width: 522
+      };
+      // all coords and widths are in jsPDF instance's declared units
+      // 'inches' in this case
+      pdf.fromHTML(
+        source, // HTML string or DOM elem ref.
+        margins.left, // x coord
+        margins.top, { // y coord
+          'width': margins.width, // max width of content on PDF
+          'elementHandlers': specialElementHandlers
+        },
+        function(dispose) {
+          // dispose: object with X, Y of the last line add to the PDF
+          //          this allow the insertion of new lines after html
+          pdf.save('Statement.pdf');
+        }, margins);
+    }
+  </script>
+  <!-- Script for physical copy of statement in Excel format -->
+  <script type="text/javascript">
+    var tableToExcel = (function() {
+      var uri = 'data:application/vnd.ms-excel;base64,',
+        template =
+        '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>',
+        base64 = function(s) {
+          return window.btoa(unescape(encodeURIComponent(s)))
+        },
+        format = function(s, c) {
+          return s.replace(/{(\w+)}/g, function(m, p) {
+            return c[p];
+          })
+        }
+      return function(table, name) {
+        if (!table.nodeType) table = document.getElementById(table)
+        var ctx = {
+          worksheet: name || 'Worksheet',
+          table: table.innerHTML
+        }
+        window.location.href = uri + base64(format(template, ctx))
+      }
+    })()
+  </script>
+  <script>
+    $('.message a').click(function() {
+      $('form').animate({
+        height: "toggle",
+        opacity: "toggle"
+      }, "slow");
+    });
+    $(document).ready(function() {
+      var i;
+      for (i = 0; i < document.getElementById("myTable").rows.length; i++) {
+        document.getElementById("myTable").rows[i].cells[0].innerHTML = '0'.repeat(9 - Math.log(document.getElementById("myTable").rows[i].cells[0].innerHTML) * Math.LOG10E + 1 | 0) + (document.getElementById("myTable").rows[i].cells[0].innerHTML)
+          .toString();
+        console.log(document.getElementById("myTable").rows[i].cells[0].innerHTML);
+      }
+    });
+  </script>
+
+  <script>
+    // Modal Image Gallery
+    function onClick(element) {
+      document.getElementById("img01").src = element.src;
+      document.getElementById("modal01").style.display = "block";
+      var captionText = document.getElementById("caption");
+      captionText.innerHTML = element.alt;
+    }
+
+
+    // Toggle between showing and hiding the sidebar when clicking the menu icon
+    var mySidebar = document.getElementById("mySidebar");
+
+    function w3_open() {
+      if (mySidebar.style.display === 'block') {
+        mySidebar.style.display = 'none';
+      } else {
+        mySidebar.style.display = 'block';
+      }
+    }
+
+    // Close the sidebar with the close button
+    function w3_close() {
+      mySidebar.style.display = "none";
+    }
+  </script>
+
+</body>
+
+</html>
