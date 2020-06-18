@@ -148,10 +148,10 @@
 
           <form class="login-form" method="post" id="create_customer" action="http://localhost:5000/create_customer" >
             <h2 align="center" style="color:#000000 ;font-family: 'Roboto', sans-serif, bold">Create Customer Screen</h2>
-            <p>Customer SSN ID: <input type="text" placeholder="6537645378" required name="id" id="id" pattern="[0-9]{10}" /></p>
-            <p>Customer Name: <input type="text" placeholder="Soham Dave" required name="Name" id="Name" maxlength="65" /></p>
-            <p>Age: <input type="number" placeholder="21" required name="Age" id="Age" min="18" max="120" /></p>
-            <p>Address: <input type="text" placeholder="221 B Baker street" required name="Address" id="Address" maxlength="128"/></p>
+            <p>Customer SSN ID: <input type="text" required name="id" id="id" pattern="[0-9]{9}" /></p>
+            <p>Customer Name: <input type="text" required name="Name" id="Name" maxlength="65" /></p>
+            <p>Age: <input type="number" required name="Age" id="Age" min="18" max="120" /></p>
+            <p>Address: <input type="text" required name="Address" id="Address" maxlength="128"/></p>
             <p>State: </p>
               <select id="State" name="State" required onchange="random_function()">
                   <option></option>

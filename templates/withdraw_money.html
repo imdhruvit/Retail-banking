@@ -128,16 +128,16 @@
 
             <form class="login-form" id="withdraw_amount" method="post" action="http://localhost:5000/withdraw_money">
               <h2 align="center" style="color:#000000 ;font-family: 'Roboto, sans-serif, bold'">Withdraw Amount</h2>
-              <p>Customer ID: <input type="text" placeholder="42069" name="cid" id="cid" required pattern="[0-9]{10}" /></p>
-              <p>Account ID: <input type="text" placeholder="42069" name="Account_id" id="Account_id" required pattern="[0-9]{10}" /></p>
+              <p>Customer ID: <input type="text" name="cid" id="cid" required pattern="[0-9]{9}" /></p>
+              <p>Account ID: <input type="text" name="Account_id" id="Account_id" required pattern="[0-9]{9}" /></p>
               <p>Account Type: </p>
                 <select required id="Type" name="Type">
                     <option></option>
                     <option>Savings</option>
                     <option>Current</option>
                 </select>
-              <p>Balance: <input type="number" placeholder="98000" name="bal" id="bal" required /></p>
-              <p>Withdraw Amount: <input type="number" placeholder="30000" name="WAmount" id="WAmount" max="20000" /></p>
+              <p>Balance: <input type="number" name="bal" id="bal" required /></p>
+              <p>Withdraw Amount: <input type="number" name="WAmount" id="WAmount" max="20000" /></p>
               <button onclick="document.getElementById('withdraw_amount').submit();">Submit</button>
             </form>
           </div>

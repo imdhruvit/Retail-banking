@@ -108,10 +108,12 @@ def create_customer():
 def delete_customer():
     if request.method == "POST":
         id = request.form['id']
+        cid = request.form['cid']
         try:
             cur = mysql.connection.cursor()
             sql = "DELETE from customer where id =%s;"
             cur.execute(sql, (id,))
+            cur.execute("DELETE from account where Cust_id =%s;",(id,))
             mysql.connection.commit()
             return("done")
         except Exception as e:
@@ -161,7 +163,7 @@ def update_customer():
             cur = mysql.connection.cursor()
             val = (Name, Age, Address, id)
             cur.execute(
-                "UPDATE customer SET Name=%s,Age=%s,Address=%s WHERE id=%s", val)
+                "UPDATE customer SET Name=%s,Age=%s,Address=%s,Timestamp=CURRENT_TIMESTAMP(),Message='Customer updated' WHERE id=%s", val)
             mysql.connection.commit()
             return("done")
         except Exception as e:
@@ -318,21 +320,22 @@ def withdraw_money():
         try:
             cur = mysql.connection.cursor()
             sql = "SELECT Amount from retail_bank.account where Account_id=%s"
-            cur.execute(sql, (Account_id,))
+            cur.execute(sql,(Account_id,))
             rec = cur.fetchone()
 
-            val = (rec, WAmount, "account created", Account_id)
-            cur.execute(
-                "UPDATE retail_bank.account SET Amount=%s-%s , Message=%s,Timestamp = CURRENT_TIMESTAMP() WHERE Account_id=%s", val)
+            if(rec[0] < int(WAmount)):
+                return("Withdraw not allowed,Please choose smaller amount.")
+            else:
+                val = ( rec , WAmount ,"account created",Account_id)
+                cur.execute("UPDATE retail_bank.account SET Amount=%s-%s , Message=%s,Timestamp = CURRENT_TIMESTAMP() WHERE Account_id=%s",val)
 
-            sql = "SELECT CURRENT_DATE()"
-            cur.execute(sql)
-            r = cur.fetchone()
+                sql = "SELECT CURRENT_DATE()"
+                cur.execute(sql)
+                r = cur.fetchone()
 
-            val = (Account_id, r[0], "Withdraw", WAmount)
-            sql = "INSERT INTO retail_bank.transactions (Account_id,trans_date,descript,amount) VALUES (%s,%s,%s,%s)"
-            cur.execute(sql, val)
-
+                val = ( Account_id , r[0] ,"Withdraw",WAmount)
+                sql = "INSERT INTO retail_bank.transactions (Account_id,trans_date,descript,amount) VALUES (%s,%s,%s,%s)"
+                cur.execute(sql,val)
             mysql.connection.commit()
             return("done")
         except Exception as e:
@@ -354,7 +357,7 @@ def get_old_data():
     id = request.form['ssn']
     try:
         cur = mysql.connection.cursor()
-        sql = "SELECT Name,Age,Address from customer where id=%s"
+        sql = "SELECT Name,Age,Address,Cust_id from customer where id=%s"
         cur.execute(sql, (id,))
         record = cur.fetchone()
         return jsonify(record)
@@ -491,33 +494,37 @@ def transfer_money():
         TAmount = request.form['TAmount']
         try:
             cur = mysql.connection.cursor()
-            cur.execute(
-                "SELECT Amount,Account_id from retail_bank.account WHERE Cust_id = %s AND Type = %s", (Cust_id, SType))
+            cur.execute("SELECT Amount,Account_id from retail_bank.account WHERE Cust_id = %s AND Type = %s",(Cust_id,SType))
             Source = cur.fetchone()
             Samount = Source[0]
             acid = Source[1]
-            cur.execute("UPDATE account SET Amount =%s-%s WHERE Account_id = %s AND Type = %s",
-                        (Samount, TAmount, acid, SType))
 
-            sql = "SELECT CURRENT_DATE()"
-            cur.execute(sql)
-            r6 = cur.fetchone()
+            if(Source[0] < int(TAmount)):
+                return("Transfer not allowed,Please choose smaller amount.")
+            else:
+                cur.execute("UPDATE account SET Amount =%s-%s WHERE Account_id = %s AND Type = %s",(Samount,TAmount,acid,SType))
 
-            cur.execute(
-                "SELECT Amount,Account_id from retail_bank.account WHERE Cust_id = %s AND Type = %s", (Cust_id, TType))
-            Target = cur.fetchone()
-            Tamount = Target[0]
-            aid = Target[1]
-            cur.execute("UPDATE account SET Amount = %s+%s WHERE Account_id = %s AND Type = %s",
-                        (Tamount, TAmount, aid, TType))
+                sql = "SELECT CURRENT_DATE()"
+                cur.execute(sql)
+                r6 = cur.fetchone()
 
-            sql = "SELECT CURRENT_DATE()"
-            cur.execute(sql)
-            r7 = cur.fetchone()
+                w1 = ( acid , r6[0] ,"Withdraw",TAmount)
+                sql = "INSERT INTO retail_bank.transactions (Account_id,trans_date,descript,amount) VALUES (%s,%s,%s,%s)"
+                cur.execute(sql,w1)
 
-            w2 = (acid, r7[0], "Transfer", TAmount)
-            sql = "INSERT INTO transactions (Account_id,trans_date,descript,amount) VALUES (%s,%s,%s,%s)"
-            cur.execute(sql, w2)
+                cur.execute("SELECT Amount,Account_id from retail_bank.account WHERE Cust_id = %s AND Type = %s",(Cust_id,TType))
+                Target = cur.fetchone()
+                Tamount = Target[0]
+                aid = Target[1]
+                cur.execute("UPDATE account SET Amount = %s+%s WHERE Account_id = %s AND Type = %s",(Tamount,TAmount,aid,TType))
+
+                sql = "SELECT CURRENT_DATE()"
+                cur.execute(sql)
+                r7 = cur.fetchone()
+
+                w2 = ( aid , r7[0] ,"Deposit",TAmount)
+                sql = "INSERT INTO retail_bank.transactions (Account_id,trans_date,descript,amount) VALUES (%s,%s,%s,%s)"
+                cur.execute(sql,w2)
 
             mysql.connection.commit()
             return("Success")
@@ -535,6 +542,6 @@ def transfer_money():
         else:
             return render_template('login.html')
 
-# Main Function 
+# Main Function
 if __name__ == '__main__':
     app.run()
