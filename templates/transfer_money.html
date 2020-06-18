@@ -139,7 +139,7 @@
        {% endwith %}
               </div>
               <h2 align="center" style="color:#000000 ;font-family: 'Roboto, sans-serif, bold'">Transfer Money</h2>
-              <p>Customer ID: <input type="text" name="cid" id="cid" required pattern="[0-9]{9}" /></p>
+              <p>Customer ID: <input required type="text" name="cid" id="cid" required pattern="[0-9]{9}" /></p>
               <p>Source Account Type: </p>
                 <select required id="SType" name="SType">
                     <option></option>
@@ -152,7 +152,7 @@
                     <option>Savings</option>
                     <option>Current</option>
                 </select>
-              <p>Transfer Amount: <input type="number" name="TAmount" id="TAmount" required /></p>
+              <p>Transfer Amount: <input required type="number" name="TAmount" id="TAmount" required /></p>
               <button style="width:-webkit-fill-available" onclick="document.getElementById('transfer_money').submit();">Transfer</button>
 
             </form>

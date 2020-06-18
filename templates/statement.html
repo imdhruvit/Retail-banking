@@ -128,10 +128,10 @@
 
           <form class="login-form" id="account_statement" method="post" action="http://localhost:5000/statement">
             <h2 align="center" style="color:#000000 ;font-family: 'Roboto, sans-serif, bold'">Account Statement</h2>
-            <p>Account ID: <input type="text" name="Account_id" id="Account_id" required pattern="[0-9]{9}" /></p>
+            <p>Account ID: <input required type="text" name="Account_id" id="Account_id" required pattern="[0-9]{9}" /></p>
               <br>
-              <input type="radio" onclick="javascript:yesnoCheck();" id="r1" name="op" value="last" style="width:auto;"/><label for="r1">&nbsp;&nbsp;Last Number of Transactions</label><br>
-              <input type="radio" onclick="javascript:yesnoCheck();" id="r2" name="op" value="dates" style="width:auto"/><label for="r2">&nbsp;&nbsp;Start-End Dates</label><br />
+              <input required type="radio" onclick="javascript:yesnoCheck();" id="r1" name="op" value="last" style="width:auto;"/><label for="r1">&nbsp;&nbsp;Last Number of Transactions</label><br>
+              <input required type="radio" onclick="javascript:yesnoCheck();" id="r2" name="op" value="dates" style="width:auto"/><label for="r2">&nbsp;&nbsp;Start-End Dates</label><br />
             <div id="r1_select" style="display:none">
               <p>Number of Transactions: <input type="number" required name="nt" id="nt"</p>
             </div>

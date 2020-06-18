@@ -154,14 +154,14 @@
 {% endwith %}
       </div>
       <h2 align="center" style="color:#000000 ;font-family: 'Roboto, sans-serif, bold'">Create Account</h2>
-      <p>Customer ID: <input type="text" name="id" id="id" required pattern="[0-9]{9}" /></p>
+      <p>Customer ID: <input required type="text" name="id" id="id" required pattern="[0-9]{9}" /></p>
       <p>Account Type: </p>
         <select required id="Type" name="Type">
             <option></option>
             <option>Savings</option>
             <option>Current</option>
         </select>
-      <p>Deposit Amount: <input type="number" name="Amount" id="Amount" max="200000" /></p>
+      <p>Deposit Amount: <input required type="number" name="Amount" id="Amount" max="200000" /></p>
       <button style="width:-webkit-fill-available" onclick="document.getElementById('create_account').submit();">Submit</button>
 
     </form>

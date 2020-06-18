@@ -139,16 +139,16 @@
        {% endwith %}
               </div>
               <h2 align="center" style="color:#000000 ;font-family: 'Roboto, sans-serif, bold'">Withdraw Amount</h2>
-              <p>Customer ID: <input type="text" name="cid" id="cid" required pattern="[0-9]{9}" /></p>
-              <p>Account ID: <input type="text" name="Account_id" id="Account_id" required pattern="[0-9]{9}" /></p>
+              <p>Customer ID: <input required type="text" name="cid" id="cid" required pattern="[0-9]{9}" /></p>
+              <p>Account ID: <input required type="text" name="Account_id" id="Account_id" required pattern="[0-9]{9}" /></p>
               <p>Account Type: </p>
                 <select required id="Type" name="Type">
                     <option></option>
                     <option>Savings</option>
                     <option>Current</option>
                 </select>
-              <p>Balance: <input type="number" name="bal" id="bal" required /></p>
-              <p>Withdraw Amount: <input type="number" name="WAmount" id="WAmount" max="20000" /></p>
+              <p>Balance: <input required type="number" name="bal" id="bal" required /></p>
+              <p>Withdraw Amount: <input required type="number" name="WAmount" id="WAmount" max="20000" /></p>
               <button onclick="document.getElementById('withdraw_amount').submit();">Submit</button>
             </form>
           </div>
