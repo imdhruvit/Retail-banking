@@ -43,7 +43,7 @@
   z-index: 1;
 }
 
-.form input {
+.form input:not([type="submit"]) {
   font-family: "Roboto", sans-serif;
   outline: 0;
   background: #f2f2f2;
@@ -61,7 +61,7 @@ width: 240px;
 margin: 0 auto;
 }
 
-.form button {
+.form button, input[type="submit"] {
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   text-align: center;

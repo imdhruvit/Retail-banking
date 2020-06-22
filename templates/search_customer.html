@@ -137,16 +137,14 @@
           <div class="login-page" id="myModal">
             <div class="form">
 
-              <form class="login-form" id="search_customer">
+              <form class="login-form" id="search_customer" method="post" action="http://localhost:5000/search_customer">
                 <h2 align="center" style="color:#000000 ;font-family: " Roboto", sans-serif, bold">Search Customer Details</h2>
                 <p>Enter SSN ID: <input required type="text" name="id" id="id" pattern="[0-9]{9}" /></p>
                 OR <br>
                 <p>Enter Customer ID: <input required type="text" name="cid" id="cid" pattern="[0-9]{9}"/></p>
-                <div style="text-align: center">
-                  <button id="sub_form">Search</button>
-                </div>
+                <input type="submit" id="sub_form" class="submit" value="Submit">
               </form>
-              <div id="result">
+              <div id="result" hidden>
                 <br>
                 <table id="search_result">
                   <thead>
@@ -246,33 +244,36 @@
           ssn = cid;
           sel = 2;
         }
-        $.ajax({
-          url: "{{url_for('search_c')}}",
-          data: {
-            ssn: ssn,
-            sel: sel
-          },
-          type: 'POST',
-          dataType: "json"
-        }).done(function(responseData) {
-          if (!$.trim(responseData)) {
-            alert('No records found');
-            window.location.href = "http://localhost:5000/search_customer";
-          } else {
-          document.getElementById("sid").innerHTML = responseData[0];
-          document.getElementById("custid").innerHTML = responseData[1];
-          document.getElementById("cname").innerHTML = responseData[2];
-          document.getElementById("cage").innerHTML = responseData[3];
-          document.getElementById("cadd").innerHTML = responseData[4];
-          document.getElementById("ccity").innerHTML = responseData[5];
-          document.getElementById("cstate").innerHTML = responseData[6];
-          document.getElementById("clast").innerHTML = responseData[7];
+        if(sid != "" || cid != ""){
+          $.ajax({
+            url: "{{url_for('search_c')}}",
+            data: {
+              ssn: ssn,
+              sel: sel
+            },
+            type: 'POST',
+            dataType: "json"
+          }).done(function(responseData) {
+            if (!$.trim(responseData)) {
+              alert('No records found');
+              window.location.href = "http://localhost:5000/search_customer";
+            } else {
+            document.getElementById("sid").innerHTML = responseData[0];
+            document.getElementById("custid").innerHTML = responseData[1];
+            document.getElementById("cname").innerHTML = responseData[2];
+            document.getElementById("cage").innerHTML = responseData[3];
+            document.getElementById("cadd").innerHTML = responseData[4];
+            document.getElementById("ccity").innerHTML = responseData[5];
+            document.getElementById("cstate").innerHTML = responseData[6];
+            document.getElementById("clast").innerHTML = responseData[7];
+          }
+          }).fail(function(jqXHR) {
+            alert("error: " + jqXHR.status);
+            console.log(jqXHR);
+          });
+          document.getElementById("result").hidden = false;
+          e.preventDefault(e);
         }
-        }).fail(function(jqXHR) {
-          alert("error: " + jqXHR.status);
-          console.log(jqXHR);
-        });
-        e.preventDefault(e);
       });
     });
   </script>

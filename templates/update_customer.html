@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -155,9 +155,9 @@
               <p>New Customer Name: <input required type="text" name="ncn" id="ncn" maxlength="65" /></p>
               <p>Old Address: <input required type="text" name="oa" id="oa" disabled/></p>
               <p>New Address: <input required type="text" name="na" id="na" maxlength="128" /></p>
-              <p>Old Age: <input required type="text" name="oage" id="oage" disabled/></p>
-              <p>New Age: <input required type="text" name="nage" id="nage" min="18" max="120" /></p>
-              <button type="button" onclick="submitForm();return false;">Update</button>
+              <p>Old Age: <input required type="number" name="oage" id="oage" disabled/></p>
+              <p>New Age: <input required type="number" name="nage" id="nage" min=10 max=120 /></p>
+              <input type="submit" class="submit" value="Update">
 
             </form>
           </div>
@@ -168,9 +168,6 @@
 </div>
 
   <script>
-  function submitForm() {
-    document.getElementById('update_customer').submit();
-  }
     $(document).ready(function(){
     $("#id").on('focusout', function postinput(){
         var ssn = $(this).val(); // this.value
@@ -225,6 +222,7 @@ $("#success-alert").fadeTo(5000, 500).slideUp(500, function() {
   $("#success-alert").slideUp(500);
 });
 });
+
   </script>
 
 </body>

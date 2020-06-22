@@ -33,15 +33,15 @@ def login():
         details = request.form
         uname = details['uname']
         password = details['pass']
-        session['username'] = uname
 
         try:
             cur = mysql.connection.cursor()
             sql = "SELECT PASSWORD,Type from userstore where Username=%s"
             cur.execute(sql, (uname,))
             record = cur.fetchone()
-            session['role'] = record[1]
             if(record[0] == password):
+                session['username'] = uname
+                session['role'] = record[1]
                 if(record[1] == 'Exec'):
                     return render_template('executive.html')
                 elif(record[1] == 'Cashier'):
@@ -230,7 +230,6 @@ def search_c():
 def search_a():
     id = request.form['ssn']
     sel = request.form['sel']
-    print(id)
     if str(sel) == '1':
         try:
             cur = mysql.connection.cursor()

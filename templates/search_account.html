@@ -131,12 +131,12 @@
               OR <br>
               <p>Enter Customer ID: <input required type="text" name="cid" id="cid" pattern="[0-9]{9}"/></p>
               <div style="text-align: center">
-                <button id="sub_form">Search</button>
+                <input type="submit" id="sub_form" class="submit" value="Search">
               </div>
             </form>
           <div id="result">
             <br>
-            <table id="search_result">
+            <table id="search_result" hidden>
             <thead>
               <tr>
                 <th width="15%">Customer ID</th>
@@ -224,29 +224,32 @@
           ssn = cid;
           sel = 2;
         }
-        $.ajax({
-            url: "{{url_for('search_a')}}",
-            data: { ssn: ssn , sel: sel},
-            type: 'POST',
-            dataType: "json"
-        }).done(function(responseData) {
-          if (!$.trim(responseData)) {
-            alert('No records found');
-            window.location.href = "http://localhost:5000/search_account";
-          } else {
-            document.getElementById("custid").innerHTML = responseData[0];
-            document.getElementById("accid").innerHTML = responseData[1];
-            document.getElementById("atype").innerHTML = responseData[2];
-            document.getElementById("aamo").innerHTML = responseData[3];
-            document.getElementById("astat").innerHTML = 'Active';
-            document.getElementById("amsg").innerHTML = responseData[4];
-            document.getElementById("alast").innerHTML = responseData[5];
-          }
-        }).fail(function(jqXHR) {
-                alert("error: " + jqXHR.status);
-                console.log(jqXHR);
-        });
-        e.preventDefault(e);
+        if(aid != "" || cid != ""){
+          $.ajax({
+              url: "{{url_for('search_a')}}",
+              data: { ssn: ssn , sel: sel},
+              type: 'POST',
+              dataType: "json"
+          }).done(function(responseData) {
+            if (!$.trim(responseData)) {
+              alert('No records found');
+              window.location.href = "http://localhost:5000/search_account";
+            } else {
+              document.getElementById("custid").innerHTML = responseData[0];
+              document.getElementById("accid").innerHTML = responseData[1];
+              document.getElementById("atype").innerHTML = responseData[2];
+              document.getElementById("aamo").innerHTML = responseData[3];
+              document.getElementById("astat").innerHTML = 'Active';
+              document.getElementById("amsg").innerHTML = responseData[4];
+              document.getElementById("alast").innerHTML = responseData[5];
+            }
+          }).fail(function(jqXHR) {
+                  alert("error: " + jqXHR.status);
+                  console.log(jqXHR);
+          });
+          document.getElementById("search_result").hidden = false;
+          e.preventDefault(e);
+        }
     });
 });
   </script>

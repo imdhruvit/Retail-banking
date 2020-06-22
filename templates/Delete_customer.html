@@ -154,11 +154,11 @@
       <p>Customer SSN ID: <input required type="text" name="id" id="id" pattern="[0-9]{9}" /></p>
       <p>Customer ID: <input required type="text" name="cid" id="cid" disabled pattern="[0-9]{9}"/></p>
       <p>Customer Name: <input required type="text" name="Name" id="Name" disabled maxlength="65"/></p>
-      <p>Age: <input required type="text" name="Age" id="Age" min="18" disabled max="120"/></p>
+      <p>Age: <input required type="text" name="Age" id="Age" min="10" disabled max="120"/></p>
       <p>Address: <input required type="text" name="Address" id="Address" disabled maxlength="128" /></p>
       <br>
       <div style="text-align: center">
-      <button type="button" onclick="submitForm();return false;">Delete</button>
+      <input type="submit" class="submit" value="Delete Customer">
       <button type="button" onclick="resetForm();return false;">Cancel</button>
       </div>
 
