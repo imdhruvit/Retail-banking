@@ -265,7 +265,36 @@
             document.getElementById("cadd").innerHTML = responseData[4];
             document.getElementById("ccity").innerHTML = responseData[5];
             document.getElementById("cstate").innerHTML = responseData[6];
-            document.getElementById("clast").innerHTML = responseData[7];
+            var mDate = new Date(responseData[7]);
+            var userTimezoneOffset = mDate.getTimezoneOffset() * 60000;
+            var minDate = new Date(mDate.getTime() + userTimezoneOffset);
+            var mth = minDate.getMonth()+1;
+            if(mth<10){
+              mth = '0'.concat(mth);
+            }
+            var h = minDate.getHours();
+            var t = "AM";
+            if(h>12){
+              h = h - 12;
+              t = "PM";
+            }
+            if(h<10){
+              h = '0'.concat(h);
+            }
+            var da = minDate.getDate();
+            if(da<10){
+              da = '0'.concat(da);
+            }
+            var m = minDate.getMinutes();
+            if(m<10){
+              m = '0'.concat(m);
+            }
+            var s = minDate.getSeconds();
+            if(s<10){
+              s = '0'.concat(s);
+            }
+            var d = ''.concat(minDate.getFullYear(),'-',mth,'-',da,' ',h,':',m,':',s,' ',t, ' IST');
+            document.getElementById("clast").innerHTML = d;
           }
           }).fail(function(jqXHR) {
             alert("error: " + jqXHR.status);

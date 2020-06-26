@@ -146,8 +146,8 @@
                     <option>Savings</option>
                     <option>Current</option>
                 </select>
-              <p>Balance: <input required type="number" name="bal" id="bal" required /></p>
-              <p>Deposit Amount: <input required type="number" name="DAmount" id="DAmount" max="200000" /></p>
+              <p>Balance: <input required type="number" name="bal" id="bal" required readonly/></p>
+              <p>Deposit Amount: <input required type="number" name="DAmount" id="DAmount" min="0"/></p>
               <input type="submit" class="submit" value="Submit">
             </form>
           </div>
@@ -158,6 +158,22 @@
 </div>
 
   <script>
+  $(document).ready(function(){
+  $("#Account_id").on('focusout', function postinput(){
+      var accId = $(this).val(); // this.value
+      $.ajax({
+          url: "{{url_for('get_balance')}}",
+          data: { accId: accId },
+          type: 'POST',
+          dataType: "json"
+      }).done(function(responseData) {
+        document.getElementById("bal").value=responseData[0];
+      }).fail(function(jqXHR) {
+              alert("error: " + jqXHR.status);
+              console.log(jqXHR);
+      });
+  });
+});
     $('.message a').click(function() {
       $('form').animate({
         height: "toggle",

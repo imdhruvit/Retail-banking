@@ -238,7 +238,6 @@
       for (i = 0; i < document.getElementById("myTable").rows.length; i++) {
         document.getElementById("myTable").rows[i].cells[0].innerHTML = '0'.repeat(9 - Math.log(document.getElementById("myTable").rows[i].cells[0].innerHTML) * Math.LOG10E + 1 | 0) + (document.getElementById("myTable").rows[i].cells[0].innerHTML)
           .toString();
-        console.log(document.getElementById("myTable").rows[i].cells[0].innerHTML);
       }
     });
   </script>

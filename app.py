@@ -343,37 +343,33 @@ def withdraw_money():
         Type = request.form['Type']
         Amount = request.form['bal']
         WAmount = request.form['WAmount']
-        if Cust_id != "" and Account_id != "" and Type != "" and Amount != "" and WAmount != "" :
-            try:
-                cur = mysql.connection.cursor()
-                sql = "SELECT Amount from retail_bank.account where Account_id=%s"
-                cur.execute(sql,(Account_id,))
-                rec = cur.fetchone()
+        try:
+            cur = mysql.connection.cursor()
+            sql = "SELECT Amount from account where Account_id=%s"
+            cur.execute(sql,(Account_id,))
+            rec = cur.fetchone()
 
-                if(rec[0] < int(WAmount)):
-                    return("Withdraw not allowed,Please choose smaller amount.")
-                else:
-                    val = ( rec , WAmount ,"account created",Account_id)
-                    cur.execute("UPDATE retail_bank.account SET Amount=%s-%s , Message=%s,Timestamp = CURRENT_TIMESTAMP() WHERE Account_id=%s",val)
+            if(rec[0] < int(WAmount)):
+                return("Withdraw not allowed,Please choose smaller amount.")
+            else:
+                val = ( rec , WAmount ,"account created",Account_id)
+                cur.execute("UPDATE retail_bank.account SET Amount=%s-%s , Message=%s,Timestamp = CURRENT_TIMESTAMP() WHERE Account_id=%s",val)
 
-                    sql = "SELECT CURRENT_DATE()"
-                    cur.execute(sql)
-                    r = cur.fetchone()
+                sql = "SELECT CURRENT_DATE()"
+                cur.execute(sql)
+                r = cur.fetchone()
 
-                    val = ( Account_id , r[0] ,"Withdraw",WAmount)
-                    sql = "INSERT INTO retail_bank.transactions (Account_id,trans_date,descript,amount) VALUES (%s,%s,%s,%s)"
-                    cur.execute(sql,val)
-                mysql.connection.commit()
-                flash('Successfully withdrawn money', "success")
-                return redirect(url_for('withdraw_money'))
-            except Exception as e:
-                flash(str(e.args[1]), "danger")
-                return redirect(url_for('withdraw_money'))
-            finally:
-                cur.close()
-        else:
-            flash("Enter all details", "danger")
+                val = ( Account_id , r[0] ,"Withdraw",WAmount)
+                sql = "INSERT INTO retail_bank.transactions (Account_id,trans_date,descript,amount) VALUES (%s,%s,%s,%s)"
+                cur.execute(sql,val)
+            mysql.connection.commit()
+            flash('Successfully withdrawn money', "success")
             return redirect(url_for('withdraw_money'))
+        except Exception as e:
+            flash(str(e.args[1]), "danger")
+            return redirect(url_for('withdraw_money'))
+        finally:
+            cur.close()
     elif request.method == "GET":
         if 'username' in session:
             if session['role'] == 'Cashier':
@@ -390,6 +386,21 @@ def get_old_data():
     try:
         cur = mysql.connection.cursor()
         sql = "SELECT Name,Age,Address,Cust_id from customer where id=%s"
+        cur.execute(sql, (id,))
+        record = cur.fetchone()
+        return jsonify(record)
+    except Exception as e:
+        return(str(e))
+    finally:
+        cur.close()
+
+# Get balance
+@app.route('/get_balance', methods=['POST'])
+def get_balance():
+    id = request.form['accId']
+    try:
+        cur = mysql.connection.cursor()
+        sql = "SELECT Amount from account where Account_id=%s"
         cur.execute(sql, (id,))
         record = cur.fetchone()
         return jsonify(record)
@@ -484,38 +495,39 @@ def delete_account():
 def statement():
     if request.method == "POST":
         id = request.form['Account_id']
-        NT = request.form['nt']
-        ST = request.form['sdate']
-        ET = request.form['edate']
-        if id != "" and (NT != "" or (ST != "" and ET != "")):
-            if(NT):
-                try:
-                    cur = mysql.connection.cursor()
-                    val = (id, int(NT))
-                    cur.execute(
-                        "SELECT trans_id, trans_date, descript, amount FROM transactions WHERE Account_id=%s ORDER BY trans_date DESC LIMIT %s", val)
-                    data = cur.fetchall()
-                    mysql.connection.commit()
-                except Exception as e:
-                    return(str(e))
-                finally:
-                    cur.close()
-            elif(ST):
-                try:
-                    cur = mysql.connection.cursor()
-                    val = (id, ST, ET)
-                    cur.execute(
-                        "SELECT trans_id, trans_date, descript, amount FROM transactions WHERE Account_id=%s and trans_date BETWEEN %s AND %s ORDER BY trans_date DESC", val)
-                    data = cur.fetchall()
-                    mysql.connection.commit()
+        op = request.form['op']
+        if(op == "last"):
+            NT = request.form['nt']
+            try:
+                cur = mysql.connection.cursor()
+                val = (id, int(NT))
+                cur.execute(
+                    "SELECT trans_id, trans_date, descript, amount FROM transactions WHERE Account_id=%s ORDER BY trans_date DESC LIMIT %s", val)
+                data = cur.fetchall()
+                mysql.connection.commit()
+            except Exception as e:
+                return(str(e))
+            finally:
+                cur.close()
+        else:
+            ST = request.form['sdate']
+            ET = request.form['edate']
+            try:
+                cur = mysql.connection.cursor()
+                val = (id, ST, ET)
+                cur.execute(
+                    "SELECT trans_id, trans_date, descript, amount FROM transactions WHERE Account_id=%s and trans_date BETWEEN %s AND %s ORDER BY trans_date DESC", val)
+                data = cur.fetchall()
+                mysql.connection.commit()
 
-                except Exception as e:
-                    return(str(e))
-                finally:
-                    cur.close()
+            except Exception as e:
+                return(str(e))
+            finally:
+                cur.close()
+        if(data):
             return render_template('statement_op.html', data=data)
         else:
-            flash("Enter all details", "danger")
+            flash("No records found", "danger")
             return redirect(url_for('statement'))
 
     elif request.method == "GET":
